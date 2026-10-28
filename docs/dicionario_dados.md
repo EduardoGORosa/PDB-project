@@ -1,7 +1,8 @@
 # Dicionário de dados
 
 Esquema `pbd` (PostgreSQL). DDL em `sql/01_schema.sql`; camada analítica em
-`sql/02_analitico.sql`. Diagrama: `docs/img/modelo_er.png`.
+`sql/02_analitico.sql`. Diagrama: `docs/modelo_er.dot`
+(`dot -Tpng docs/modelo_er.dot -o modelo_er.png`).
 
 **Convenções.** PK = chave primária; FK = chave estrangeira; *nulável* indica
 que o campo aceita NULL. Quadrimestres no formato `AAAAQn` (`2022Q1`).

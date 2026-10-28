@@ -45,7 +45,7 @@ SISAB_HEADER_RE = re.compile(r"^\"?uf\s*;\s*ibge\s*;", re.IGNORECASE)
 SISAB_QUADRIMESTRE_RE = re.compile(r"^(\d{4})\s*Q([1-3])\s*\(%\)$")
 
 # --------------------------------------------------------------------------
-# Regimes metodológicos (CONTEXTO.md §4)
+# Regimes metodológicos
 # --------------------------------------------------------------------------
 # Nota Técnica nº 05/2020 (DESF/SAPS/MS) — vigente até 2021Q3
 # Nota Técnica nº 11/2022, de 15/02/2022 — vigente a partir de 2022Q1
@@ -100,7 +100,7 @@ def regime_do_quadrimestre(quadrimestre: str) -> str:
 # --------------------------------------------------------------------------
 # API DEMAS
 # --------------------------------------------------------------------------
-# O prefixo /v1 documentado no CONTEXTO.md devolve 404 desde a verificação de
+# O prefixo /v1 que aparece na documentação devolve 404 desde a verificação de
 # 2026-08-31; a base correta é a raiz do host. O Swagger vive em
 # https://apidadosabertos.saude.gov.br/static/swagger.json e não declara basePath.
 API_BASE = (

@@ -1,9 +1,8 @@
-#!/usr/bin/env python
 """Reconstrói o banco do zero: esquema, FINBRA, divisão regional, SISAB e a
 camada analítica.
 
-    python carrega.py            # recria tudo e roda a verificação
-    python carrega.py --verifica # só o relatório de verificação
+    python -m pipeline.carrega            # recria tudo e roda a verificação
+    python -m pipeline.carrega --verifica # só o relatório de verificação
 
 A conexão vem de DATABASE_URL (padrão: postgresql://pbd:pbd@127.0.0.1:5433/pbd).
 FINBRA 2018–2019 são baixados pela API do SICONFI:

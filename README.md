@@ -6,16 +6,12 @@ Eduardo Rosa, Rafael Stephanou e Vinícius Herzog (líder)
 Base de dados que integra, para os 497 municípios do Rio Grande do Sul, o gasto
 municipal em Atenção Básica (FINBRA/SICONFI, subfunção 10.301) com o desempenho
 nos indicadores do Previne Brasil (SISAB), com a mudança de regra de cálculo de
-2022 modelada numa dimensão de indicadores versionada. O escopo e as decisões
-metodológicas estão no anteprojeto (`entrega/Anteprojeto.pdf`).
+2022 modelada numa dimensão de indicadores versionada.
 
 | Documento | Onde |
 |---|---|
-| Relatório final | `entrega/relatorio_final.pdf` (fonte: `.html`) |
-| Apresentação final | `entrega/apresentacao_final.pdf` (fonte: `.html`) |
-| Relatório parcial | `entrega/relatorio_parcial.pdf` (fonte: `.html`) |
 | Dicionário de dados | `docs/dicionario_dados.md` |
-| Modelo ER | `docs/img/modelo_er.png` (fonte: `docs/modelo_er.dot`) |
+| Modelo ER | `docs/modelo_er.dot` (`dot -Tpng docs/modelo_er.dot -o modelo_er.png`) |
 | Trabalhos relacionados | `docs/trabalhos_relacionados.md` |
 
 ---
@@ -37,8 +33,8 @@ python -m pipeline.extrai_finbra 2018 2019   # ~50 min, API do SICONFI
 python -m pipeline.extrai_api                # opcional, só para confere_visao
 
 # 4. carga completa (~20 s, idempotente: recria o esquema pbd)
-python carrega.py
-python carrega.py --verifica                 # só o relatório de verificação
+python -m pipeline.carrega
+python -m pipeline.carrega --verifica        # só o relatório de verificação
 
 # 5. consultas
 psql "$DATABASE_URL" -f sql/03_consultas_basicas.sql
@@ -53,8 +49,8 @@ A conexão vem de `DATABASE_URL` (padrão `postgresql://pbd:pbd@127.0.0.1:5433/p
 ## Estrutura
 
 ```
-carrega.py                 orquestrador da carga
 pipeline/
+  carrega.py               orquestrador da carga
   comum.py                 formatos das fontes, regimes, efeito financeiro
   leitura_finbra.py        parsing dos CSV anuais (latin-1, ';', 3 linhas de preâmbulo)
   leitura_sisab.py         despivota o formato largo do SISAB
@@ -75,9 +71,7 @@ sql/
   03_consultas_basicas.sql B1–B10
   04_consultas_avancadas.sql A1–A9
 app/app.py                 Streamlit, quatro visões
-docs/                      dicionário, modelo ER, trabalhos relacionados, figuras
-entrega/                   documentos entregues
-legado/                    scripts da fase exploratória
+docs/                      dicionário, modelo ER, trabalhos relacionados
 ```
 
 ## Decisões de modelagem
@@ -90,7 +84,8 @@ legado/                    scripts da fase exploratória
    não estava vigente no seu quadrimestre.
 3. **`efeito_financeiro` em `dim_periodo` e `ajuste_financiamento`** registram
    quando o resultado de fato influiu no repasse. Só 2022Q2–2023Q3 tiveram
-   pagamento pleno pelo resultado real (ver relatório final, seção 3).
+   pagamento pleno pelo resultado real (atos e ressalvas em
+   `data_ref/ajustes_financiamento.csv` e em `pipeline/comum.py`).
 4. **Município com duas chaves**: `cod_ibge7` (PK, FINBRA) e `cod_ibge6`
    (UNIQUE, SISAB), ligadas por `CHECK (cod_ibge7 / 10 = cod_ibge6)`.
 5. **População como fato datado** (`pop_municipio`), não atributo do município.

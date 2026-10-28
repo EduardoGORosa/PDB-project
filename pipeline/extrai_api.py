@@ -1,14 +1,11 @@
 """Extração dos indicadores do Previne Brasil na API DEMAS / Ministério da Saúde.
 
-Substitui `extrai_previne.py` e `api.py`, que estavam ambos incorretos.
-
-Três correções sobre o que estava escrito:
+Três cuidados que a documentação da API não deixa claros:
 
 1. O prefixo `/v1` da URL devolve 404. A base é a raiz do host.
 
 2. A paginação por `offset` é INUTILIZÁVEL, e não apenas mal documentada.
-   O CONTEXTO.md registra que a ordem dos resultados seria determinística.
-   Não é: seis chamadas idênticas a `offset=0&limit=5` devolveram duas
+   A ordem dos resultados não é determinística: seis chamadas idênticas a `offset=0&limit=5` devolveram duas
    janelas diferentes, deslocadas em um registro. Paginar por offset
    duplica e perde linhas silenciosamente.
 
