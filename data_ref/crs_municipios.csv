@@ -1,0 +1,498 @@
+cod_ibge6,municipio,regiao_saude_codigo,regiao_saude_nome,crs_numero,crs_sede
+430003,Aceguá,R22,Pampa,7,Bagé
+430005,Água Santa,R18,Araucárias,6,Passo Fundo
+430010,Agudo,R01,Verdes Campos,4,Santa Maria
+430020,Ajuricaba,R13,Diversidade,17,Ijuí
+430030,Alecrim,R14,Fronteira Noroeste,14,Santa Rosa
+430040,Alegrete,R03,Fronteira Oeste,10,Alegrete
+430045,Alegria,R14,Fronteira Noroeste,14,Santa Rosa
+430047,Almirante Tamandaré do Sul,R17,Planalto,6,Passo Fundo
+430050,Alpestre,R15,Caminho das Águas,2,Frederico Westphalen
+430055,Alto Alegre,R19,Botucaraí,6,Passo Fundo
+430057,Alto Feliz,R26,Uva Vale,5,Caxias do Sul
+430060,Alvorada,R10,Capital e Vale do Gravataí,1,Porto Alegre
+430063,Amaral Ferrador,R21,Sul,3,Pelotas
+430064,Ametista do Sul,R15,Caminho das Águas,2,Frederico Westphalen
+430066,André da Rocha,R18,Araucárias,6,Passo Fundo
+430070,Anta Gorda,R29,Vales e Montanhas,16,Lajeado
+430080,Antônio Prado,R26,Uva Vale,5,Caxias do Sul
+430085,Arambaré,R09,Carbonífera/Costa Doce,1,Porto Alegre
+430087,Araricá,R07,Vale dos Sinos,1,Porto Alegre
+430090,Aratiba,R16,Alto Uruguai Gaúcho,11,Erechim
+430100,Arroio do Meio,R29,Vales e Montanhas,16,Lajeado
+430105,Arroio do Sal,R04,Belas Praias,18,Osório
+430107,Arroio do Padre,R21,Sul,3,Pelotas
+430110,Arroio dos Ratos,R09,Carbonífera/Costa Doce,1,Porto Alegre
+430120,Arroio do Tigre,R27,Jacuí Centro,8,Cachoeira do Sul
+430130,Arroio Grande,R21,Sul,3,Pelotas
+430140,Arvorezinha,R19,Botucaraí,6,Passo Fundo
+430150,Augusto Pestana,R13,Diversidade,17,Ijuí
+430155,Áurea,R16,Alto Uruguai Gaúcho,11,Erechim
+430160,Bagé,R22,Pampa,7,Bagé
+430163,Balneário Pinhal,R05,Bons Ventos,18,Osório
+430165,Barão,R08,Vale do Caí e Metropolitana,1,Porto Alegre
+430170,Barão de Cotegipe,R16,Alto Uruguai Gaúcho,11,Erechim
+430175,Barão do Triunfo,R09,Carbonífera/Costa Doce,1,Porto Alegre
+430180,Barracão,R18,Araucárias,6,Passo Fundo
+430185,Barra do Guarita,R15,Caminho das Águas,2,Frederico Westphalen
+430187,Barra do Quaraí,R03,Fronteira Oeste,10,Alegrete
+430190,Barra do Ribeiro,R09,Carbonífera/Costa Doce,1,Porto Alegre
+430192,Barra do Rio Azul,R16,Alto Uruguai Gaúcho,11,Erechim
+430195,Barra Funda,R20,Rota da Produção,15,Palmeira das Missões
+430200,Barros Cassal,R19,Botucaraí,6,Passo Fundo
+430205,Benjamin Constant do Sul,R16,Alto Uruguai Gaúcho,11,Erechim
+430210,Bento Gonçalves,R25,Vinhedos e Basalto,5,Caxias do Sul
+430215,Boa Vista das Missões,R20,Rota da Produção,15,Palmeira das Missões
+430220,Boa Vista do Buricá,R14,Fronteira Noroeste,14,Santa Rosa
+430222,Boa Vista do Cadeado,R12,Portal das Missões,9,Cruz Alta
+430223,Boa Vista do Incra,R12,Portal das Missões,9,Cruz Alta
+430225,Boa Vista do Sul,R25,Vinhedos e Basalto,5,Caxias do Sul
+430230,Bom Jesus,R24,Campos de Cima da Serra,5,Caxias do Sul
+430235,Bom Princípio,R26,Uva Vale,5,Caxias do Sul
+430237,Bom Progresso,R15,Caminho das Águas,2,Frederico Westphalen
+430240,Bom Retiro do Sul,R30,Vale da Luz,16,Lajeado
+430245,Boqueirão do Leão,R29,Vales e Montanhas,16,Lajeado
+430250,Bossoroca,R11,Sete Povos das Missões,12,Santo Ângelo
+430258,Bozano,R13,Diversidade,17,Ijuí
+430260,Braga,R20,Rota da Produção,15,Palmeira das Missões
+430265,Brochier,R08,Vale do Caí e Metropolitana,1,Porto Alegre
+430270,Butiá,R09,Carbonífera/Costa Doce,1,Porto Alegre
+430280,Caçapava do Sul,R27,Jacuí Centro,8,Cachoeira do Sul
+430290,Cacequi,R02,Entre Rios,4,Santa Maria
+430300,Cachoeira do Sul,R27,Jacuí Centro,8,Cachoeira do Sul
+430310,Cachoeirinha,R10,Capital e Vale do Gravataí,1,Porto Alegre
+430320,Cacique Doble,R18,Araucárias,6,Passo Fundo
+430330,Caibaté,R11,Sete Povos das Missões,12,Santo Ângelo
+430340,Caiçara,R15,Caminho das Águas,2,Frederico Westphalen
+430350,Camaquã,R09,Carbonífera/Costa Doce,1,Porto Alegre
+430355,Camargo,R17,Planalto,6,Passo Fundo
+430360,Cambará do Sul,R06,Vale do Paranhana e Costa Serra,1,Porto Alegre
+430367,Campestre da Serra,R24,Campos de Cima da Serra,5,Caxias do Sul
+430370,Campina das Missões,R14,Fronteira Noroeste,14,Santa Rosa
+430380,Campinas do Sul,R16,Alto Uruguai Gaúcho,11,Erechim
+430390,Campo Bom,R07,Vale dos Sinos,1,Porto Alegre
+430400,Campo Novo,R13,Diversidade,17,Ijuí
+430410,Campos Borges,R19,Botucaraí,6,Passo Fundo
+430420,Candelária,R28,Vinte e Oito,13,Santa Cruz do Sul
+430430,Cândido Godói,R14,Fronteira Noroeste,14,Santa Rosa
+430435,Candiota,R22,Pampa,7,Bagé
+430440,Canela,R23,Caxias e Hortênsias,5,Caxias do Sul
+430450,Canguçu,R21,Sul,3,Pelotas
+430460,Canoas,R08,Vale do Caí e Metropolitana,1,Porto Alegre
+430461,Canudos do Vale,R29,Vales e Montanhas,16,Lajeado
+430462,Capão Bonito do Sul,R18,Araucárias,6,Passo Fundo
+430463,Capão da Canoa,R04,Belas Praias,18,Osório
+430465,Capão do Cipó,R02,Entre Rios,4,Santa Maria
+430466,Capão do Leão,R21,Sul,3,Pelotas
+430467,Capivari do Sul,R05,Bons Ventos,18,Osório
+430468,Capela de Santana,R08,Vale do Caí e Metropolitana,1,Porto Alegre
+430469,Capitão,R29,Vales e Montanhas,16,Lajeado
+430470,Carazinho,R17,Planalto,6,Passo Fundo
+430471,Caraá,R05,Bons Ventos,18,Osório
+430480,Carlos Barbosa,R25,Vinhedos e Basalto,5,Caxias do Sul
+430485,Carlos Gomes,R16,Alto Uruguai Gaúcho,11,Erechim
+430490,Casca,R17,Planalto,6,Passo Fundo
+430495,Caseiros,R18,Araucárias,6,Passo Fundo
+430500,Catuípe,R13,Diversidade,17,Ijuí
+430510,Caxias do Sul,R23,Caxias e Hortênsias,5,Caxias do Sul
+430511,Centenário,R16,Alto Uruguai Gaúcho,11,Erechim
+430512,Cerrito,R21,Sul,3,Pelotas
+430513,Cerro Branco,R27,Jacuí Centro,8,Cachoeira do Sul
+430515,Cerro Grande,R20,Rota da Produção,15,Palmeira das Missões
+430517,Cerro Grande do Sul,R09,Carbonífera/Costa Doce,1,Porto Alegre
+430520,Cerro Largo,R11,Sete Povos das Missões,12,Santo Ângelo
+430530,Chapada,R20,Rota da Produção,15,Palmeira das Missões
+430535,Charqueadas,R09,Carbonífera/Costa Doce,1,Porto Alegre
+430537,Charrua,R16,Alto Uruguai Gaúcho,11,Erechim
+430540,Chiapetta,R13,Diversidade,17,Ijuí
+430543,Chuí,R21,Sul,3,Pelotas
+430544,Chuvisca,R09,Carbonífera/Costa Doce,1,Porto Alegre
+430545,Cidreira,R05,Bons Ventos,18,Osório
+430550,Ciríaco,R17,Planalto,6,Passo Fundo
+430558,Colinas,R30,Vale da Luz,16,Lajeado
+430560,Colorado,R12,Portal das Missões,9,Cruz Alta
+430570,Condor,R13,Diversidade,17,Ijuí
+430580,Constantina,R20,Rota da Produção,15,Palmeira das Missões
+430583,Coqueiro Baixo,R29,Vales e Montanhas,16,Lajeado
+430585,Coqueiros do Sul,R17,Planalto,6,Passo Fundo
+430587,Coronel Barros,R13,Diversidade,17,Ijuí
+430590,Coronel Bicaco,R20,Rota da Produção,15,Palmeira das Missões
+430593,Coronel Pilar,R25,Vinhedos e Basalto,5,Caxias do Sul
+430595,Cotiporã,R25,Vinhedos e Basalto,5,Caxias do Sul
+430597,Coxilha,R17,Planalto,6,Passo Fundo
+430600,Crissiumal,R13,Diversidade,17,Ijuí
+430605,Cristal,R09,Carbonífera/Costa Doce,1,Porto Alegre
+430607,Cristal do Sul,R15,Caminho das Águas,2,Frederico Westphalen
+430610,Cruz Alta,R12,Portal das Missões,9,Cruz Alta
+430613,Cruzaltense,R16,Alto Uruguai Gaúcho,11,Erechim
+430620,Cruzeiro do Sul,R29,Vales e Montanhas,16,Lajeado
+430630,David Canabarro,R17,Planalto,6,Passo Fundo
+430632,Derrubadas,R15,Caminho das Águas,2,Frederico Westphalen
+430635,Dezesseis de Novembro,R11,Sete Povos das Missões,12,Santo Ângelo
+430637,Dilermando de Aguiar,R01,Verdes Campos,4,Santa Maria
+430640,Dois Irmãos,R07,Vale dos Sinos,1,Porto Alegre
+430642,Dois Irmãos das Missões,R20,Rota da Produção,15,Palmeira das Missões
+430645,Dois Lajeados,R29,Vales e Montanhas,16,Lajeado
+430650,Dom Feliciano,R09,Carbonífera/Costa Doce,1,Porto Alegre
+430655,Dom Pedro de Alcântara,R04,Belas Praias,18,Osório
+430660,Dom Pedrito,R22,Pampa,7,Bagé
+430670,Dona Francisca,R01,Verdes Campos,4,Santa Maria
+430673,Doutor Maurício Cardoso,R14,Fronteira Noroeste,14,Santa Rosa
+430675,Doutor Ricardo,R29,Vales e Montanhas,16,Lajeado
+430676,Eldorado do Sul,R09,Carbonífera/Costa Doce,1,Porto Alegre
+430680,Encantado,R29,Vales e Montanhas,16,Lajeado
+430690,Encruzilhada do Sul,R27,Jacuí Centro,8,Cachoeira do Sul
+430692,Engenho Velho,R20,Rota da Produção,15,Palmeira das Missões
+430693,Entre-Ijuís,R11,Sete Povos das Missões,12,Santo Ângelo
+430695,Entre Rios do Sul,R16,Alto Uruguai Gaúcho,11,Erechim
+430697,Erebango,R16,Alto Uruguai Gaúcho,11,Erechim
+430700,Erechim,R16,Alto Uruguai Gaúcho,11,Erechim
+430705,Ernestina,R17,Planalto,6,Passo Fundo
+430710,Herval,R21,Sul,3,Pelotas
+430720,Erval Grande,R16,Alto Uruguai Gaúcho,11,Erechim
+430730,Erval Seco,R15,Caminho das Águas,2,Frederico Westphalen
+430740,Esmeralda,R24,Campos de Cima da Serra,5,Caxias do Sul
+430745,Esperança do Sul,R15,Caminho das Águas,2,Frederico Westphalen
+430750,Espumoso,R19,Botucaraí,6,Passo Fundo
+430755,Estação,R16,Alto Uruguai Gaúcho,11,Erechim
+430760,Estância Velha,R07,Vale dos Sinos,1,Porto Alegre
+430770,Esteio,R08,Vale do Caí e Metropolitana,1,Porto Alegre
+430780,Estrela,R30,Vale da Luz,16,Lajeado
+430781,Estrela Velha,R27,Jacuí Centro,8,Cachoeira do Sul
+430783,Eugênio de Castro,R11,Sete Povos das Missões,12,Santo Ângelo
+430786,Fagundes Varela,R25,Vinhedos e Basalto,5,Caxias do Sul
+430790,Farroupilha,R26,Uva Vale,5,Caxias do Sul
+430800,Faxinal do Soturno,R01,Verdes Campos,4,Santa Maria
+430805,Faxinalzinho,R16,Alto Uruguai Gaúcho,11,Erechim
+430807,Fazenda Vilanova,R30,Vale da Luz,16,Lajeado
+430810,Feliz,R26,Uva Vale,5,Caxias do Sul
+430820,Flores da Cunha,R26,Uva Vale,5,Caxias do Sul
+430825,Floriano Peixoto,R16,Alto Uruguai Gaúcho,11,Erechim
+430830,Fontoura Xavier,R19,Botucaraí,6,Passo Fundo
+430840,Formigueiro,R01,Verdes Campos,4,Santa Maria
+430843,Forquetinha,R29,Vales e Montanhas,16,Lajeado
+430845,Fortaleza dos Valos,R12,Portal das Missões,9,Cruz Alta
+430850,Frederico Westphalen,R15,Caminho das Águas,2,Frederico Westphalen
+430860,Garibaldi,R25,Vinhedos e Basalto,5,Caxias do Sul
+430865,Garruchos,R11,Sete Povos das Missões,12,Santo Ângelo
+430870,Gaurama,R16,Alto Uruguai Gaúcho,11,Erechim
+430880,General Câmara,R09,Carbonífera/Costa Doce,1,Porto Alegre
+430885,Gentil,R17,Planalto,6,Passo Fundo
+430890,Getúlio Vargas,R16,Alto Uruguai Gaúcho,11,Erechim
+430900,Giruá,R14,Fronteira Noroeste,14,Santa Rosa
+430905,Glorinha,R10,Capital e Vale do Gravataí,1,Porto Alegre
+430910,Gramado,R23,Caxias e Hortênsias,5,Caxias do Sul
+430912,Gramado dos Loureiros,R20,Rota da Produção,15,Palmeira das Missões
+430915,Gramado Xavier,R28,Vinte e Oito,13,Santa Cruz do Sul
+430920,Gravataí,R10,Capital e Vale do Gravataí,1,Porto Alegre
+430925,Guabiju,R25,Vinhedos e Basalto,5,Caxias do Sul
+430930,Guaíba,R09,Carbonífera/Costa Doce,1,Porto Alegre
+430940,Guaporé,R25,Vinhedos e Basalto,5,Caxias do Sul
+430950,Guarani das Missões,R11,Sete Povos das Missões,12,Santo Ângelo
+430955,Harmonia,R08,Vale do Caí e Metropolitana,1,Porto Alegre
+430957,Herveiras,R28,Vinte e Oito,13,Santa Cruz do Sul
+430960,Horizontina,R14,Fronteira Noroeste,14,Santa Rosa
+430965,Hulha Negra,R22,Pampa,7,Bagé
+430970,Humaitá,R13,Diversidade,17,Ijuí
+430975,Ibarama,R27,Jacuí Centro,8,Cachoeira do Sul
+430980,Ibiaçá,R18,Araucárias,6,Passo Fundo
+430990,Ibiraiaras,R18,Araucárias,6,Passo Fundo
+430995,Ibirapuitã,R19,Botucaraí,6,Passo Fundo
+431000,Ibirubá,R12,Portal das Missões,9,Cruz Alta
+431010,Igrejinha,R06,Vale do Paranhana e Costa Serra,1,Porto Alegre
+431020,Ijuí,R13,Diversidade,17,Ijuí
+431030,Ilópolis,R29,Vales e Montanhas,16,Lajeado
+431033,Imbé,R05,Bons Ventos,18,Osório
+431036,Imigrante,R30,Vale da Luz,16,Lajeado
+431040,Independência,R14,Fronteira Noroeste,14,Santa Rosa
+431041,Inhacorá,R13,Diversidade,17,Ijuí
+431043,Ipê,R26,Uva Vale,5,Caxias do Sul
+431046,Ipiranga do Sul,R16,Alto Uruguai Gaúcho,11,Erechim
+431050,Iraí,R15,Caminho das Águas,2,Frederico Westphalen
+431053,Itaara,R01,Verdes Campos,4,Santa Maria
+431055,Itacurubi,R02,Entre Rios,4,Santa Maria
+431057,Itapuca,R19,Botucaraí,6,Passo Fundo
+431060,Itaqui,R03,Fronteira Oeste,10,Alegrete
+431065,Itati,R04,Belas Praias,18,Osório
+431070,Itatiba do Sul,R16,Alto Uruguai Gaúcho,11,Erechim
+431075,Ivorá,R01,Verdes Campos,4,Santa Maria
+431080,Ivoti,R07,Vale dos Sinos,1,Porto Alegre
+431085,Jaboticaba,R20,Rota da Produção,15,Palmeira das Missões
+431087,Jacuizinho,R12,Portal das Missões,9,Cruz Alta
+431090,Jacutinga,R16,Alto Uruguai Gaúcho,11,Erechim
+431100,Jaguarão,R21,Sul,3,Pelotas
+431110,Jaguari,R02,Entre Rios,4,Santa Maria
+431112,Jaquirana,R24,Campos de Cima da Serra,5,Caxias do Sul
+431113,Jari,R02,Entre Rios,4,Santa Maria
+431115,Jóia,R13,Diversidade,17,Ijuí
+431120,Júlio de Castilhos,R01,Verdes Campos,4,Santa Maria
+431123,Lagoa Bonita do Sul,R27,Jacuí Centro,8,Cachoeira do Sul
+431125,Lagoão,R19,Botucaraí,6,Passo Fundo
+431127,Lagoa dos Três Cantos,R17,Planalto,6,Passo Fundo
+431130,Lagoa Vermelha,R18,Araucárias,6,Passo Fundo
+431140,Lajeado,R29,Vales e Montanhas,16,Lajeado
+431142,Lajeado do Bugre,R20,Rota da Produção,15,Palmeira das Missões
+431150,Lavras do Sul,R22,Pampa,7,Bagé
+431160,Liberato Salzano,R15,Caminho das Águas,2,Frederico Westphalen
+431162,Lindolfo Collor,R07,Vale dos Sinos,1,Porto Alegre
+431164,Linha Nova,R23,Caxias e Hortênsias,5,Caxias do Sul
+431170,Machadinho,R18,Araucárias,6,Passo Fundo
+431171,Maçambará,R03,Fronteira Oeste,10,Alegrete
+431173,Mampituba,R04,Belas Praias,18,Osório
+431175,Manoel Viana,R03,Fronteira Oeste,10,Alegrete
+431177,Maquiné,R04,Belas Praias,18,Osório
+431179,Maratá,R08,Vale do Caí e Metropolitana,1,Porto Alegre
+431180,Marau,R17,Planalto,6,Passo Fundo
+431190,Marcelino Ramos,R16,Alto Uruguai Gaúcho,11,Erechim
+431198,Mariana Pimentel,R09,Carbonífera/Costa Doce,1,Porto Alegre
+431200,Mariano Moro,R16,Alto Uruguai Gaúcho,11,Erechim
+431205,Marques de Souza,R29,Vales e Montanhas,16,Lajeado
+431210,Mata,R02,Entre Rios,4,Santa Maria
+431213,Mato Castelhano,R17,Planalto,6,Passo Fundo
+431215,Mato Leitão,R28,Vinte e Oito,13,Santa Cruz do Sul
+431217,Mato Queimado,R11,Sete Povos das Missões,12,Santo Ângelo
+431220,Maximiliano de Almeida,R18,Araucárias,6,Passo Fundo
+431225,Minas do Leão,R09,Carbonífera/Costa Doce,1,Porto Alegre
+431230,Miraguaí,R20,Rota da Produção,15,Palmeira das Missões
+431235,Montauri,R17,Planalto,6,Passo Fundo
+431237,Monte Alegre dos Campos,R24,Campos de Cima da Serra,5,Caxias do Sul
+431238,Monte Belo do Sul,R25,Vinhedos e Basalto,5,Caxias do Sul
+431240,Montenegro,R08,Vale do Caí e Metropolitana,1,Porto Alegre
+431242,Mormaço,R19,Botucaraí,6,Passo Fundo
+431244,Morrinhos do Sul,R04,Belas Praias,18,Osório
+431245,Morro Redondo,R21,Sul,3,Pelotas
+431247,Morro Reuter,R07,Vale dos Sinos,1,Porto Alegre
+431250,Mostardas,R05,Bons Ventos,18,Osório
+431260,Muçum,R29,Vales e Montanhas,16,Lajeado
+431261,Muitos Capões,R24,Campos de Cima da Serra,5,Caxias do Sul
+431262,Muliterno,R17,Planalto,6,Passo Fundo
+431265,Não-Me-Toque,R17,Planalto,6,Passo Fundo
+431267,Nicolau Vergueiro,R17,Planalto,6,Passo Fundo
+431270,Nonoai,R16,Alto Uruguai Gaúcho,11,Erechim
+431275,Nova Alvorada,R17,Planalto,6,Passo Fundo
+431280,Nova Araçá,R25,Vinhedos e Basalto,5,Caxias do Sul
+431290,Nova Bassano,R25,Vinhedos e Basalto,5,Caxias do Sul
+431295,Nova Boa Vista,R20,Rota da Produção,15,Palmeira das Missões
+431300,Nova Bréscia,R29,Vales e Montanhas,16,Lajeado
+431301,Nova Candelária,R14,Fronteira Noroeste,14,Santa Rosa
+431303,Nova Esperança do Sul,R02,Entre Rios,4,Santa Maria
+431306,Nova Hartz,R07,Vale dos Sinos,1,Porto Alegre
+431308,Nova Pádua,R26,Uva Vale,5,Caxias do Sul
+431310,Nova Palma,R01,Verdes Campos,4,Santa Maria
+431320,Nova Petrópolis,R23,Caxias e Hortênsias,5,Caxias do Sul
+431330,Nova Prata,R25,Vinhedos e Basalto,5,Caxias do Sul
+431333,Nova Ramada,R13,Diversidade,17,Ijuí
+431335,Nova Roma do Sul,R26,Uva Vale,5,Caxias do Sul
+431337,Nova Santa Rita,R08,Vale do Caí e Metropolitana,1,Porto Alegre
+431339,Novo Cabrais,R27,Jacuí Centro,8,Cachoeira do Sul
+431340,Novo Hamburgo,R07,Vale dos Sinos,1,Porto Alegre
+431342,Novo Machado,R14,Fronteira Noroeste,14,Santa Rosa
+431344,Novo Tiradentes,R15,Caminho das Águas,2,Frederico Westphalen
+431346,Novo Xingu,R20,Rota da Produção,15,Palmeira das Missões
+431349,Novo Barreiro,R20,Rota da Produção,15,Palmeira das Missões
+431350,Osório,R05,Bons Ventos,18,Osório
+431360,Paim Filho,R18,Araucárias,6,Passo Fundo
+431365,Palmares do Sul,R05,Bons Ventos,18,Osório
+431370,Palmeira das Missões,R20,Rota da Produção,15,Palmeira das Missões
+431380,Palmitinho,R15,Caminho das Águas,2,Frederico Westphalen
+431390,Panambi,R13,Diversidade,17,Ijuí
+431395,Pantano Grande,R28,Vinte e Oito,13,Santa Cruz do Sul
+431400,Paraí,R25,Vinhedos e Basalto,5,Caxias do Sul
+431402,Paraíso do Sul,R01,Verdes Campos,4,Santa Maria
+431403,Pareci Novo,R08,Vale do Caí e Metropolitana,1,Porto Alegre
+431405,Parobé,R06,Vale do Paranhana e Costa Serra,1,Porto Alegre
+431406,Passa Sete,R27,Jacuí Centro,8,Cachoeira do Sul
+431407,Passo do Sobrado,R28,Vinte e Oito,13,Santa Cruz do Sul
+431410,Passo Fundo,R17,Planalto,6,Passo Fundo
+431413,Paulo Bento,R16,Alto Uruguai Gaúcho,11,Erechim
+431415,Paverama,R30,Vale da Luz,16,Lajeado
+431417,Pedras Altas,R21,Sul,3,Pelotas
+431420,Pedro Osório,R21,Sul,3,Pelotas
+431430,Pejuçara,R13,Diversidade,17,Ijuí
+431440,Pelotas,R21,Sul,3,Pelotas
+431442,Picada Café,R23,Caxias e Hortênsias,5,Caxias do Sul
+431445,Pinhal,R15,Caminho das Águas,2,Frederico Westphalen
+431446,Pinhal da Serra,R24,Campos de Cima da Serra,5,Caxias do Sul
+431447,Pinhal Grande,R01,Verdes Campos,4,Santa Maria
+431449,Pinheirinho do Vale,R15,Caminho das Águas,2,Frederico Westphalen
+431450,Pinheiro Machado,R21,Sul,3,Pelotas
+431454,Pinto Bandeira,R25,Vinhedos e Basalto,5,Caxias do Sul
+431455,Pirapó,R11,Sete Povos das Missões,12,Santo Ângelo
+431460,Piratini,R21,Sul,3,Pelotas
+431470,Planalto,R15,Caminho das Águas,2,Frederico Westphalen
+431475,Poço das Antas,R30,Vale da Luz,16,Lajeado
+431477,Pontão,R17,Planalto,6,Passo Fundo
+431478,Ponte Preta,R16,Alto Uruguai Gaúcho,11,Erechim
+431480,Portão,R07,Vale dos Sinos,1,Porto Alegre
+431490,Porto Alegre,R10,Capital e Vale do Gravataí,1,Porto Alegre
+431500,Porto Lucena,R14,Fronteira Noroeste,14,Santa Rosa
+431505,Porto Mauá,R14,Fronteira Noroeste,14,Santa Rosa
+431507,Porto Vera Cruz,R14,Fronteira Noroeste,14,Santa Rosa
+431510,Porto Xavier,R11,Sete Povos das Missões,12,Santo Ângelo
+431513,Pouso Novo,R29,Vales e Montanhas,16,Lajeado
+431514,Presidente Lucena,R07,Vale dos Sinos,1,Porto Alegre
+431515,Progresso,R29,Vales e Montanhas,16,Lajeado
+431517,Protásio Alves,R25,Vinhedos e Basalto,5,Caxias do Sul
+431520,Putinga,R29,Vales e Montanhas,16,Lajeado
+431530,Quaraí,R03,Fronteira Oeste,10,Alegrete
+431531,Quatro Irmãos,R16,Alto Uruguai Gaúcho,11,Erechim
+431532,Quevedos,R01,Verdes Campos,4,Santa Maria
+431535,Quinze de Novembro,R12,Portal das Missões,9,Cruz Alta
+431540,Redentora,R20,Rota da Produção,15,Palmeira das Missões
+431545,Relvado,R29,Vales e Montanhas,16,Lajeado
+431550,Restinga Sêca,R01,Verdes Campos,4,Santa Maria
+431555,Rio dos Índios,R16,Alto Uruguai Gaúcho,11,Erechim
+431560,Rio Grande,R21,Sul,3,Pelotas
+431570,Rio Pardo,R28,Vinte e Oito,13,Santa Cruz do Sul
+431575,Riozinho,R06,Vale do Paranhana e Costa Serra,1,Porto Alegre
+431580,Roca Sales,R29,Vales e Montanhas,16,Lajeado
+431590,Rodeio Bonito,R15,Caminho das Águas,2,Frederico Westphalen
+431595,Rolador,R11,Sete Povos das Missões,12,Santo Ângelo
+431600,Rolante,R06,Vale do Paranhana e Costa Serra,1,Porto Alegre
+431610,Ronda Alta,R20,Rota da Produção,15,Palmeira das Missões
+431620,Rondinha,R20,Rota da Produção,15,Palmeira das Missões
+431630,Roque Gonzales,R11,Sete Povos das Missões,12,Santo Ângelo
+431640,Rosário do Sul,R03,Fronteira Oeste,10,Alegrete
+431642,Sagrada Família,R20,Rota da Produção,15,Palmeira das Missões
+431643,Saldanha Marinho,R12,Portal das Missões,9,Cruz Alta
+431645,Salto do Jacuí,R12,Portal das Missões,9,Cruz Alta
+431647,Salvador das Missões,R11,Sete Povos das Missões,12,Santo Ângelo
+431650,Salvador do Sul,R08,Vale do Caí e Metropolitana,1,Porto Alegre
+431660,Sananduva,R18,Araucárias,6,Passo Fundo
+431670,Santa Bárbara do Sul,R12,Portal das Missões,9,Cruz Alta
+431673,Santa Cecília do Sul,R18,Araucárias,6,Passo Fundo
+431675,Santa Clara do Sul,R29,Vales e Montanhas,16,Lajeado
+431680,Santa Cruz do Sul,R28,Vinte e Oito,13,Santa Cruz do Sul
+431690,Santa Maria,R01,Verdes Campos,4,Santa Maria
+431695,Santa Maria do Herval,R07,Vale dos Sinos,1,Porto Alegre
+431697,Santa Margarida do Sul,R03,Fronteira Oeste,10,Alegrete
+431700,Santana da Boa Vista,R21,Sul,3,Pelotas
+431710,Sant'Ana do Livramento,R03,Fronteira Oeste,10,Alegrete
+431720,Santa Rosa,R14,Fronteira Noroeste,14,Santa Rosa
+431725,Santa Tereza,R25,Vinhedos e Basalto,5,Caxias do Sul
+431730,Santa Vitória do Palmar,R21,Sul,3,Pelotas
+431740,Santiago,R02,Entre Rios,4,Santa Maria
+431750,Santo Ângelo,R11,Sete Povos das Missões,12,Santo Ângelo
+431755,Santo Antônio do Palma,R17,Planalto,6,Passo Fundo
+431760,Santo Antônio da Patrulha,R05,Bons Ventos,18,Osório
+431770,Santo Antônio das Missões,R11,Sete Povos das Missões,12,Santo Ângelo
+431775,Santo Antônio do Planalto,R17,Planalto,6,Passo Fundo
+431780,Santo Augusto,R13,Diversidade,17,Ijuí
+431790,Santo Cristo,R14,Fronteira Noroeste,14,Santa Rosa
+431795,Santo Expedito do Sul,R18,Araucárias,6,Passo Fundo
+431800,São Borja,R11,Sete Povos das Missões,12,Santo Ângelo
+431805,São Domingos do Sul,R17,Planalto,6,Passo Fundo
+431810,São Francisco de Assis,R02,Entre Rios,4,Santa Maria
+431820,São Francisco de Paula,R06,Vale do Paranhana e Costa Serra,1,Porto Alegre
+431830,São Gabriel,R03,Fronteira Oeste,10,Alegrete
+431840,São Jerônimo,R09,Carbonífera/Costa Doce,1,Porto Alegre
+431842,São João da Urtiga,R18,Araucárias,6,Passo Fundo
+431843,São João do Polêsine,R01,Verdes Campos,4,Santa Maria
+431844,São Jorge,R25,Vinhedos e Basalto,5,Caxias do Sul
+431845,São José das Missões,R20,Rota da Produção,15,Palmeira das Missões
+431846,São José do Herval,R29,Vales e Montanhas,16,Lajeado
+431848,São José do Hortêncio,R07,Vale dos Sinos,1,Porto Alegre
+431849,São José do Inhacorá,R14,Fronteira Noroeste,14,Santa Rosa
+431850,São José do Norte,R21,Sul,3,Pelotas
+431860,São José do Ouro,R18,Araucárias,6,Passo Fundo
+431861,São José do Sul,R08,Vale do Caí e Metropolitana,1,Porto Alegre
+431862,São José dos Ausentes,R24,Campos de Cima da Serra,5,Caxias do Sul
+431870,São Leopoldo,R07,Vale dos Sinos,1,Porto Alegre
+431880,São Lourenço do Sul,R21,Sul,3,Pelotas
+431890,São Luiz Gonzaga,R11,Sete Povos das Missões,12,Santo Ângelo
+431900,São Marcos,R26,Uva Vale,5,Caxias do Sul
+431910,São Martinho,R13,Diversidade,17,Ijuí
+431912,São Martinho da Serra,R01,Verdes Campos,4,Santa Maria
+431915,São Miguel das Missões,R11,Sete Povos das Missões,12,Santo Ângelo
+431920,São Nicolau,R11,Sete Povos das Missões,12,Santo Ângelo
+431930,São Paulo das Missões,R14,Fronteira Noroeste,14,Santa Rosa
+431935,São Pedro da Serra,R08,Vale do Caí e Metropolitana,1,Porto Alegre
+431936,São Pedro das Missões,R20,Rota da Produção,15,Palmeira das Missões
+431937,São Pedro do Butiá,R11,Sete Povos das Missões,12,Santo Ângelo
+431940,São Pedro do Sul,R01,Verdes Campos,4,Santa Maria
+431950,São Sebastião do Caí,R08,Vale do Caí e Metropolitana,1,Porto Alegre
+431960,São Sepé,R01,Verdes Campos,4,Santa Maria
+431970,São Valentim,R16,Alto Uruguai Gaúcho,11,Erechim
+431971,São Valentim do Sul,R29,Vales e Montanhas,16,Lajeado
+431973,São Valério do Sul,R13,Diversidade,17,Ijuí
+431975,São Vendelino,R26,Uva Vale,5,Caxias do Sul
+431980,São Vicente do Sul,R02,Entre Rios,4,Santa Maria
+431990,Sapiranga,R07,Vale dos Sinos,1,Porto Alegre
+432000,Sapucaia do Sul,R08,Vale do Caí e Metropolitana,1,Porto Alegre
+432010,Sarandi,R20,Rota da Produção,15,Palmeira das Missões
+432020,Seberi,R15,Caminho das Águas,2,Frederico Westphalen
+432023,Sede Nova,R13,Diversidade,17,Ijuí
+432026,Segredo,R27,Jacuí Centro,8,Cachoeira do Sul
+432030,Selbach,R12,Portal das Missões,9,Cruz Alta
+432032,Senador Salgado Filho,R14,Fronteira Noroeste,14,Santa Rosa
+432035,Sentinela do Sul,R09,Carbonífera/Costa Doce,1,Porto Alegre
+432040,Serafina Corrêa,R17,Planalto,6,Passo Fundo
+432045,Sério,R29,Vales e Montanhas,16,Lajeado
+432050,Sertão,R17,Planalto,6,Passo Fundo
+432055,Sertão Santana,R09,Carbonífera/Costa Doce,1,Porto Alegre
+432057,Sete de Setembro,R11,Sete Povos das Missões,12,Santo Ângelo
+432060,Severiano de Almeida,R16,Alto Uruguai Gaúcho,11,Erechim
+432065,Silveira Martins,R01,Verdes Campos,4,Santa Maria
+432067,Sinimbu,R28,Vinte e Oito,13,Santa Cruz do Sul
+432070,Sobradinho,R27,Jacuí Centro,8,Cachoeira do Sul
+432080,Soledade,R19,Botucaraí,6,Passo Fundo
+432085,Tabaí,R08,Vale do Caí e Metropolitana,1,Porto Alegre
+432090,Tapejara,R18,Araucárias,6,Passo Fundo
+432100,Tapera,R19,Botucaraí,6,Passo Fundo
+432110,Tapes,R09,Carbonífera/Costa Doce,1,Porto Alegre
+432120,Taquara,R06,Vale do Paranhana e Costa Serra,1,Porto Alegre
+432130,Taquari,R30,Vale da Luz,16,Lajeado
+432132,Taquaruçu do Sul,R15,Caminho das Águas,2,Frederico Westphalen
+432135,Tavares,R05,Bons Ventos,18,Osório
+432140,Tenente Portela,R15,Caminho das Águas,2,Frederico Westphalen
+432143,Terra de Areia,R04,Belas Praias,18,Osório
+432145,Teutônia,R30,Vale da Luz,16,Lajeado
+432146,Tio Hugo,R19,Botucaraí,6,Passo Fundo
+432147,Tiradentes do Sul,R15,Caminho das Águas,2,Frederico Westphalen
+432149,Toropi,R01,Verdes Campos,4,Santa Maria
+432150,Torres,R04,Belas Praias,18,Osório
+432160,Tramandaí,R05,Bons Ventos,18,Osório
+432162,Travesseiro,R29,Vales e Montanhas,16,Lajeado
+432163,Três Arroios,R16,Alto Uruguai Gaúcho,11,Erechim
+432166,Três Cachoeiras,R04,Belas Praias,18,Osório
+432170,Três Coroas,R06,Vale do Paranhana e Costa Serra,1,Porto Alegre
+432180,Três de Maio,R14,Fronteira Noroeste,14,Santa Rosa
+432183,Três Forquilhas,R04,Belas Praias,18,Osório
+432185,Três Palmeiras,R20,Rota da Produção,15,Palmeira das Missões
+432190,Três Passos,R15,Caminho das Águas,2,Frederico Westphalen
+432195,Trindade do Sul,R20,Rota da Produção,15,Palmeira das Missões
+432200,Triunfo,R08,Vale do Caí e Metropolitana,1,Porto Alegre
+432210,Tucunduva,R14,Fronteira Noroeste,14,Santa Rosa
+432215,Tunas,R19,Botucaraí,6,Passo Fundo
+432218,Tupanci do Sul,R18,Araucárias,6,Passo Fundo
+432220,Tupanciretã,R01,Verdes Campos,4,Santa Maria
+432225,Tupandi,R08,Vale do Caí e Metropolitana,1,Porto Alegre
+432230,Tuparendi,R14,Fronteira Noroeste,14,Santa Rosa
+432232,Turuçu,R21,Sul,3,Pelotas
+432234,Ubiretama,R11,Sete Povos das Missões,12,Santo Ângelo
+432235,União da Serra,R25,Vinhedos e Basalto,5,Caxias do Sul
+432237,Unistalda,R02,Entre Rios,4,Santa Maria
+432240,Uruguaiana,R03,Fronteira Oeste,10,Alegrete
+432250,Vacaria,R24,Campos de Cima da Serra,5,Caxias do Sul
+432252,Vale Verde,R28,Vinte e Oito,13,Santa Cruz do Sul
+432253,Vale do Sol,R28,Vinte e Oito,13,Santa Cruz do Sul
+432254,Vale Real,R26,Uva Vale,5,Caxias do Sul
+432255,Vanini,R17,Planalto,6,Passo Fundo
+432260,Venâncio Aires,R28,Vinte e Oito,13,Santa Cruz do Sul
+432270,Vera Cruz,R28,Vinte e Oito,13,Santa Cruz do Sul
+432280,Veranópolis,R25,Vinhedos e Basalto,5,Caxias do Sul
+432285,Vespasiano Corrêa,R29,Vales e Montanhas,16,Lajeado
+432290,Viadutos,R16,Alto Uruguai Gaúcho,11,Erechim
+432300,Viamão,R10,Capital e Vale do Gravataí,1,Porto Alegre
+432310,Vicente Dutra,R15,Caminho das Águas,2,Frederico Westphalen
+432320,Victor Graeff,R17,Planalto,6,Passo Fundo
+432330,Vila Flores,R25,Vinhedos e Basalto,5,Caxias do Sul
+432335,Vila Lângaro,R18,Araucárias,6,Passo Fundo
+432340,Vila Maria,R17,Planalto,6,Passo Fundo
+432345,Vila Nova do Sul,R01,Verdes Campos,4,Santa Maria
+432350,Vista Alegre,R15,Caminho das Águas,2,Frederico Westphalen
+432360,Vista Alegre do Prata,R25,Vinhedos e Basalto,5,Caxias do Sul
+432370,Vista Gaúcha,R15,Caminho das Águas,2,Frederico Westphalen
+432375,Vitória das Missões,R11,Sete Povos das Missões,12,Santo Ângelo
+432377,Westfália,R30,Vale da Luz,16,Lajeado
+432380,Xangri-lá,R04,Belas Praias,18,Osório

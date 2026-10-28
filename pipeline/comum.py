@@ -53,6 +53,44 @@ REGIME_NT05 = "NT 05/2020"
 REGIME_NT11 = "NT 11/2022"
 CORTE_REGIME = "2022Q1"  # primeiro quadrimestre sob a NT 11/2022
 
+REGIMES = {
+    REGIME_NT05: dict(
+        inicio="2018Q1", fim="2021Q3",
+        descricao="Regra original dos 7 indicadores de pagamento por desempenho "
+                  "(Portaria GM/MS nº 3.222/2019; Nota Técnica nº 5/2020-DESF/SAPS/MS). "
+                  "O painel do SISAB apresenta 2018–2019 calculados com a mesma regra, "
+                  "antes da vigência do programa."),
+    REGIME_NT11: dict(
+        inicio="2022Q1", fim=None,
+        descricao="Regra revista a partir de 2022 (Portaria GM/MS nº 102/2022; Notas "
+                  "Técnicas nº 11/2022 e nº 12/2022-SAPS/MS; fichas NT 13 a 19/2022): "
+                  "contagem restrita à APS, 1ª consulta de pré-natal até a 12ª semana, "
+                  "janela semestral para hipertensão e diabetes, meta de pré-natal de "
+                  "60% para 45% e denominador identificado só com cobertura ≥ 85% do "
+                  "estimado."),
+}
+
+
+def efeito_financeiro(quadrimestre: str) -> str:
+    """Se o resultado do quadrimestre de dados influiu no repasse do Previne.
+
+    Defasagem de um quadrimestre entre dado e parcela (NT 11/2022, §5.6):
+      até 2019Q3      o programa não existia (valores recalculados pelo painel)
+      2020Q1–2021Q2   parcelas fixadas (transição; Portarias 166 e 2.396/2021)
+      2021Q3, 2022Q1  parte dos indicadores fixada (Portaria 102/2022, art. 6º-A)
+      2022Q2–2023Q3   resultado real pago integralmente
+      2024Q1 em diante  Portaria 3.493/2024: novo modelo a partir de maio/2024
+    """
+    if quadrimestre < "2020Q1":
+        return "anterior ao programa"
+    if quadrimestre < "2021Q3":
+        return "sem efeito"
+    if quadrimestre <= "2022Q1":
+        return "parcial"
+    if quadrimestre <= "2023Q3":
+        return "pleno"
+    return "posterior ao programa"
+
 
 def regime_do_quadrimestre(quadrimestre: str) -> str:
     """'2018Q1' -> 'NT 05/2020';  '2022Q1' -> 'NT 11/2022'."""

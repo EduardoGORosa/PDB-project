@@ -1,13 +1,14 @@
 #!/usr/bin/env python
-"""Reconstrói o banco do zero: esquema, FINBRA, SISAB e API.
+"""Reconstrói o banco do zero: esquema, FINBRA, divisão regional, SISAB e a
+camada analítica.
 
-    python carrega.py            # recria tudo
-    python carrega.py --verifica # só roda o relatório de verificação
+    python carrega.py            # recria tudo e roda a verificação
+    python carrega.py --verifica # só o relatório de verificação
 
 A conexão vem de DATABASE_URL (padrão: postgresql://pbd:pbd@127.0.0.1:5433/pbd).
-Os JSON da API precisam existir em data/api/; para baixá-los:
+FINBRA 2018–2019 são baixados pela API do SICONFI:
 
-    python -m pipeline.extrai_api
+    python -m pipeline.extrai_finbra 2018 2019
 """
 
 from __future__ import annotations
@@ -15,13 +16,13 @@ from __future__ import annotations
 import sys
 import time
 
-from pipeline import carrega_api, carrega_finbra, carrega_sisab, verifica
+from pipeline import carrega_finbra, carrega_regional, carrega_sisab, verifica
 from pipeline.bd import conecta
 from pipeline.comum import SQL
 
 
-def aplica_esquema(con) -> None:
-    con.execute(open(SQL / "01_schema.sql", encoding="utf-8").read())
+def executa_sql(con, arquivo: str) -> None:
+    con.execute((SQL / arquivo).read_text(encoding="utf-8"))
 
 
 def main() -> None:
@@ -32,23 +33,26 @@ def main() -> None:
     inicio = time.time()
     with conecta() as con:
         print("== esquema ==")
-        aplica_esquema(con)
-        con.commit()
+        executa_sql(con, "01_schema.sql")
 
-        print("\n== FINBRA ==")
+        print("== FINBRA ==")
         r = carrega_finbra.carrega(con)
-        con.commit()
-        print(f"   {r['linhas_despesa']} linhas, exercícios {r['anos']}")
+        print(f"   {r['linhas_despesa']} linhas, exercícios {r['anos']}, "
+              f"{r['lacunas']} lacunas registradas")
 
-        print("\n== SISAB ==")
+        print("== divisão regional ==")
+        r = carrega_regional.carrega(con)
+        print(f"   {r['municipios']} municípios, {r['regioes']} regiões, "
+              f"{r['coordenadorias']} coordenadorias")
+
+        print("== SISAB ==")
         r = carrega_sisab.carrega(con)
-        con.commit()
-        print(f"   {r['linhas']} linhas, {r['periodo'][0]}..{r['periodo'][1]}")
+        print(f"   {r['linhas']} linhas, {r['periodo'][0]}..{r['periodo'][1]}, "
+              f"{r['versoes']} versões de indicador, {r['ajustes']} ajustes de portaria")
 
-        print("\n== API DEMAS ==")
-        r = carrega_api.carrega(con)
+        print("== camada analítica ==")
+        executa_sql(con, "02_analitico.sql")
         con.commit()
-        print(f"   {r['linhas']} linhas, 2024Q1..2024Q3")
 
     print(f"\nconcluído em {time.time() - inicio:.1f}s\n")
     verifica.main()

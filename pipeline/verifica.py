@@ -1,8 +1,7 @@
 """Relatório de verificação da carga: contagens, cobertura e taxa de nulos.
 
-Roda depois de cada carga. Distingue o que é ESPERADO (a API não publica o
-indicador de hipertensão; o SISAB não publica denominadores) do que é
-DIVERGÊNCIA a investigar.
+Roda depois de cada carga: volumes, cobertura de cada fonte por período,
+nulos, a dimensão de indicadores e o registro de inconsistências.
 """
 
 from __future__ import annotations
@@ -34,101 +33,67 @@ def main() -> None:
         print("=" * 72)
 
         _tabela(con, "1. Volume por tabela", """
-            SELECT 'dim_municipio' AS tabela, count(*) AS linhas FROM dim_municipio
-            UNION ALL SELECT 'dim_periodo',   count(*) FROM dim_periodo
-            UNION ALL SELECT 'dim_indicador', count(*) FROM dim_indicador
-            UNION ALL SELECT 'dim_conta',     count(*) FROM dim_conta
-            UNION ALL SELECT 'dim_estagio_despesa', count(*) FROM dim_estagio_despesa
-            UNION ALL SELECT 'populacao_municipio', count(*) FROM populacao_municipio
-            UNION ALL SELECT 'fato_despesa',   count(*) FROM fato_despesa
-            UNION ALL SELECT 'fato_indicador', count(*) FROM fato_indicador
-            ORDER BY 1""")
+            SELECT relname AS tabela, n_live_tup AS linhas
+              FROM pg_stat_user_tables WHERE schemaname = 'pbd' ORDER BY 1""")
 
-        _tabela(con, "2. FINBRA — linhas e cobertura por exercício", """
+        _tabela(con, "2. FINBRA — cobertura por exercício (estágio Liquidadas)", """
             SELECT exercicio,
-                   count(*) AS linhas,
-                   count(DISTINCT cod_ibge6) AS municipios,
-                   %s - count(DISTINCT cod_ibge6) AS faltando
-              FROM fato_despesa GROUP BY 1 ORDER BY 1""", (MUNICIPIOS_RS,))
+                   count(*)                                 AS municipios,
+                   count(gasto_ab)                          AS com_10301,
+                   %s - count(gasto_ab)                     AS sem_10301,
+                   MIN(gasto_ab_pc)                         AS pc_min,
+                   PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY gasto_ab_pc)::numeric(10,2)
+                                                            AS pc_mediana,
+                   MAX(gasto_ab_pc)                         AS pc_max
+              FROM mv_gasto_anual GROUP BY 1 ORDER BY 1""", (MUNICIPIOS_RS,))
 
-        _tabela(con, "3. FINBRA — cobertura da subfunção 10.301 (Despesas Empenhadas)", """
-            SELECT d.exercicio,
-                   count(*) AS municipios,
-                   %s - count(*) AS faltando,
-                   ROUND(100.0 * count(*) / %s, 2) AS pct
-              FROM fato_despesa d JOIN dim_conta c ON c.conta = d.conta
-             WHERE c.codigo = '10.301' AND d.estagio = 'Despesas Empenhadas'
-             GROUP BY 1 ORDER BY 1""", (MUNICIPIOS_RS, MUNICIPIOS_RS))
-
-        _tabela(con, "4. FINBRA — municípios sem 10.301 (declaração truncada no SICONFI)", """
-            SELECT m.cod_ibge7, m.nome, a.exercicio,
-                   (SELECT count(*) FROM fato_despesa f
-                     WHERE f.cod_ibge6 = m.cod_ibge6 AND f.exercicio = a.exercicio)
-                       AS linhas_declaradas
-              FROM dim_municipio m
-             CROSS JOIN (SELECT DISTINCT exercicio FROM fato_despesa) a
-             WHERE NOT EXISTS (
-                   SELECT 1 FROM fato_despesa d JOIN dim_conta c ON c.conta = d.conta
-                    WHERE d.cod_ibge6 = m.cod_ibge6 AND d.exercicio = a.exercicio
-                      AND c.codigo = '10.301' AND d.estagio = 'Despesas Empenhadas')
-             ORDER BY a.exercicio""")
-
-        _tabela(con, "5. SISAB — linhas, cobertura e nulos por quadrimestre", """
-            SELECT f.quadrimestre, f.regime,
-                   count(*) AS linhas,
-                   count(DISTINCT f.cod_ibge6) AS municipios,
-                   count(DISTINCT f.id_indicador) AS indicadores,
-                   count(*) FILTER (WHERE f.percentual IS NULL) AS nulos
-              FROM fato_indicador f WHERE f.fonte = 'sisab'
+        _tabela(con, "3. SISAB — cobertura, nulos e zeros por ano", """
+            SELECT p.ano, f.regime,
+                   count(DISTINCT f.cod_ibge6)                     AS municipios,
+                   count(*)                                        AS linhas,
+                   count(*) FILTER (WHERE f.percentual IS NULL)    AS nulos,
+                   ROUND(100.0 * count(*) FILTER (WHERE f.percentual = 0) / count(*), 1)
+                                                                   AS pct_zeros
+              FROM fato_indicador f JOIN dim_periodo p USING (quadrimestre)
              GROUP BY 1, 2 ORDER BY 1""")
 
-        _tabela(con, "6. API — linhas, cobertura e nulos por quadrimestre e visão", """
-            SELECT quadrimestre, visao_equipe,
-                   count(*) AS linhas,
-                   count(DISTINCT cod_ibge6) AS municipios,
-                   count(DISTINCT id_indicador) AS indicadores,
-                   count(*) FILTER (WHERE numerador IS NULL) AS nulos_numerador,
-                   count(*) FILTER (WHERE den_utilizado IS NULL) AS nulos_den
-              FROM fato_indicador WHERE fonte = 'api'
-             GROUP BY 1, 2 ORDER BY 1, 2""")
+        _tabela(con, "4. dim_indicador — versões e vigência", """
+            SELECT ordem, codigo, regime, vigencia_inicio, vigencia_fim,
+                   meta, peso, left(nota_tecnica, 40) AS nota_tecnica
+              FROM dim_indicador ORDER BY ordem, regime""")
 
-        _tabela(con, "7. Taxa de nulos em fato_indicador (nulos ESPERADOS entre parênteses)", """
-            SELECT fonte,
-                   count(*) AS linhas,
-                   ROUND(100.0*count(*) FILTER (WHERE percentual IS NULL)/count(*), 2)
-                       AS pct_nulo_percentual,
-                   ROUND(100.0*count(*) FILTER (WHERE numerador IS NULL)/count(*), 2)
-                       AS "pct_nulo_numerador (100 no sisab)",
-                   ROUND(100.0*count(*) FILTER (WHERE den_utilizado IS NULL)/count(*), 2)
-                       AS "pct_nulo_den_util (100 no sisab)"
-              FROM fato_indicador GROUP BY 1 ORDER BY 1""")
+        _tabela(con, "5. Efeito financeiro de cada quadrimestre e ajustes por portaria", """
+            SELECT p.quadrimestre, p.efeito_financeiro,
+                   string_agg(i.ordem::text, ',' ORDER BY i.ordem) AS indicadores_fixados,
+                   min(a.ato_normativo) AS ato_normativo
+              FROM dim_periodo p
+              LEFT JOIN ajuste_financiamento a USING (quadrimestre)
+              LEFT JOIN dim_indicador i USING (id_indicador)
+             GROUP BY 1, 2 ORDER BY 1""")
 
-        _tabela(con, "8. Indicadores: as duas versões e a contraparte na API", """
-            SELECT codigo_indicador, regime,
-                   vigencia_inicio || '..' || vigencia_fim AS cobertura,
-                   COALESCE(codigo_api::text, '— ausente na API') AS codigo_api,
-                   left(nome, 58) AS nome
-              FROM dim_indicador ORDER BY codigo_indicador, regime""")
+        _tabela(con, "6. Divisão regional", """
+            SELECT c.crs_numero, c.sede,
+                   count(DISTINCT r.regiao_codigo) AS regioes,
+                   count(m.cod_ibge7)              AS municipios
+              FROM dim_coordenadoria c
+              JOIN dim_regiao_saude r USING (crs_numero)
+              JOIN dim_municipio    m USING (regiao_codigo)
+             GROUP BY 1, 2 ORDER BY 1""")
 
-        _tabela(con, "9. Junção FINBRA x SISAB — municípios que casam", """
-            SELECT count(*) FILTER (WHERE tem_despesa AND tem_indicador) AS ambos,
-                   count(*) FILTER (WHERE tem_despesa AND NOT tem_indicador) AS so_finbra,
-                   count(*) FILTER (WHERE NOT tem_despesa AND tem_indicador) AS so_sisab
-              FROM (SELECT m.cod_ibge6,
-                           EXISTS (SELECT 1 FROM fato_despesa d WHERE d.cod_ibge6 = m.cod_ibge6)
-                               AS tem_despesa,
-                           EXISTS (SELECT 1 FROM fato_indicador f WHERE f.cod_ibge6 = m.cod_ibge6)
-                               AS tem_indicador
-                      FROM dim_municipio m) s""")
+        _tabela(con, "7. Integração — anos com desempenho e com gasto", """
+            SELECT d.ano,
+                   count(DISTINCT d.cod_ibge6)                    AS com_desempenho,
+                   count(DISTINCT d.cod_ibge6) FILTER (WHERE g.gasto_ab IS NOT NULL)
+                                                                  AS com_gasto
+              FROM mv_desempenho_anual d
+              LEFT JOIN mv_gasto_anual g
+                     ON g.cod_ibge6 = d.cod_ibge6 AND g.exercicio = d.ano
+             GROUP BY 1 ORDER BY 1""")
 
-        _tabela(con, "10. Anos com indicador mas SEM gasto correspondente", """
-            SELECT p.ano,
-                   count(DISTINCT f.cod_ibge6) AS municipios_com_indicador,
-                   COALESCE((SELECT count(DISTINCT d.cod_ibge6) FROM fato_despesa d
-                              WHERE d.exercicio = p.ano), 0) AS municipios_com_despesa
-              FROM fato_indicador f JOIN dim_periodo p USING (quadrimestre)
-             GROUP BY p.ano ORDER BY p.ano""")
-
+        _tabela(con, "8. Registro de qualidade", """
+            SELECT l.fonte, l.tipo, l.periodo, m.nome, left(l.descricao, 70) AS descricao
+              FROM log_qualidade l LEFT JOIN dim_municipio m USING (cod_ibge7)
+             ORDER BY l.fonte, l.periodo""")
         print()
 
 
