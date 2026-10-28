@@ -1,0 +1,93 @@
+digraph modelo {
+  graph [rankdir=LR, fontname="Helvetica", nodesep=0.35, ranksep=0.7, bgcolor="white", pad=0.2];
+  node  [shape=plain, fontname="Helvetica", fontsize=10];
+  edge  [color="#5b6d80", arrowhead=crow, arrowtail=none, dir=both, arrowsize=0.7];
+
+
+  dim_coordenadoria [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+    <tr><td bgcolor="#0f5c8c"><font color="white"><b>dim_coordenadoria</b></font></td></tr>
+    <tr><td align="left"><b>crs_numero</b> PK</td></tr>
+    <tr><td align="left">sede</td></tr></table>>];
+  dim_regiao_saude [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+    <tr><td bgcolor="#0f5c8c"><font color="white"><b>dim_regiao_saude</b></font></td></tr>
+    <tr><td align="left"><b>regiao_codigo</b> PK</td></tr>
+    <tr><td align="left">nome</td></tr>
+    <tr><td align="left"><i>crs_numero</i> FK</td></tr></table>>];
+  dim_municipio [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+    <tr><td bgcolor="#0f5c8c"><font color="white"><b>dim_municipio</b></font></td></tr>
+    <tr><td align="left"><b>cod_ibge7</b> PK</td></tr>
+    <tr><td align="left">cod_ibge6 UNIQUE</td></tr>
+    <tr><td align="left">nome, uf</td></tr>
+    <tr><td align="left"><i>regiao_codigo</i> FK</td></tr></table>>];
+  pop_municipio [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+    <tr><td bgcolor="#0f5c8c"><font color="white"><b>pop_municipio</b></font></td></tr>
+    <tr><td align="left"><b><i>cod_ibge7</i></b> PK FK</td></tr>
+    <tr><td align="left"><b>exercicio</b> PK</td></tr>
+    <tr><td align="left">populacao</td></tr></table>>];
+  dim_conta [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+    <tr><td bgcolor="#0f5c8c"><font color="white"><b>dim_conta</b></font></td></tr>
+    <tr><td align="left"><b>conta</b> PK</td></tr>
+    <tr><td align="left">nivel, codigo, funcao,</td></tr>
+    <tr><td align="left">subfuncao, nome, eh_residual</td></tr></table>>];
+  dim_estagio [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+    <tr><td bgcolor="#0f5c8c"><font color="white"><b>dim_estagio</b></font></td></tr>
+    <tr><td align="left"><b>estagio</b> PK</td></tr>
+    <tr><td align="left">ordem</td></tr></table>>];
+  fato_despesa [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+    <tr><td bgcolor="#b0562a"><font color="white"><b>fato_despesa</b></font></td></tr>
+    <tr><td align="left"><b><i>cod_ibge7</i></b> PK FK</td></tr>
+    <tr><td align="left"><b>exercicio</b> PK</td></tr>
+    <tr><td align="left"><b><i>estagio</i></b> PK FK</td></tr>
+    <tr><td align="left"><b><i>conta</i></b> PK FK</td></tr>
+    <tr><td align="left">valor</td></tr></table>>];
+  dim_regime [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+    <tr><td bgcolor="#0f5c8c"><font color="white"><b>dim_regime</b></font></td></tr>
+    <tr><td align="left"><b>regime</b> PK</td></tr>
+    <tr><td align="left">descricao, inicio, fim</td></tr></table>>];
+  dim_periodo [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+    <tr><td bgcolor="#0f5c8c"><font color="white"><b>dim_periodo</b></font></td></tr>
+    <tr><td align="left"><b>quadrimestre</b> PK</td></tr>
+    <tr><td align="left">ano, numero_quadrimestre</td></tr>
+    <tr><td align="left"><i>regime_metodologico</i> FK</td></tr>
+    <tr><td align="left">efeito_financeiro</td></tr></table>>];
+  dim_indicador [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+    <tr><td bgcolor="#0f5c8c"><font color="white"><b>dim_indicador</b> (versionada)</font></td></tr>
+    <tr><td align="left"><b>id_indicador</b> PK</td></tr>
+    <tr><td align="left">codigo, ordem, nome</td></tr>
+    <tr><td align="left">regra_numerador, regra_denominador</td></tr>
+    <tr><td align="left">meta, peso, nota_tecnica</td></tr>
+    <tr><td align="left"><i>regime</i> FK</td></tr>
+    <tr><td align="left"><i>vigencia_inicio, vigencia_fim</i> FK</td></tr></table>>];
+  ajuste_financiamento [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+    <tr><td bgcolor="#5b6d80"><font color="white"><b>ajuste_financiamento</b></font></td></tr>
+    <tr><td align="left"><b><i>id_indicador</i></b> PK FK</td></tr>
+    <tr><td align="left"><b><i>quadrimestre</i></b> PK FK</td></tr>
+    <tr><td align="left">regra, ato_normativo, observacao</td></tr></table>>];
+  fato_indicador [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+    <tr><td bgcolor="#b0562a"><font color="white"><b>fato_indicador</b></font></td></tr>
+    <tr><td align="left"><b><i>cod_ibge6</i></b> PK FK</td></tr>
+    <tr><td align="left"><b><i>quadrimestre</i></b> PK FK¹</td></tr>
+    <tr><td align="left"><b><i>id_indicador</i></b> PK FK²</td></tr>
+    <tr><td align="left"><i>regime</i> FK¹ FK²</td></tr>
+    <tr><td align="left">percentual</td></tr></table>>];
+  log_qualidade [label=<<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+    <tr><td bgcolor="#5b6d80"><font color="white"><b>log_qualidade</b></font></td></tr>
+    <tr><td align="left"><b>id</b> PK</td></tr>
+    <tr><td align="left">fonte, tipo, periodo, descricao</td></tr>
+    <tr><td align="left"><i>cod_ibge7</i> FK</td></tr></table>>];
+
+  dim_coordenadoria -> dim_regiao_saude;
+  dim_regiao_saude  -> dim_municipio;
+  dim_municipio -> pop_municipio;
+  dim_municipio -> fato_despesa;
+  dim_conta     -> fato_despesa;
+  dim_estagio   -> fato_despesa;
+  dim_municipio -> fato_indicador [label=" cod_ibge6", fontsize=8, fontcolor="#5b6d80"];
+  dim_municipio -> log_qualidade;
+  dim_regime    -> dim_periodo;
+  dim_regime    -> dim_indicador;
+  dim_periodo   -> fato_indicador [label=" ¹ (quadrimestre, regime)", fontsize=8, fontcolor="#5b6d80"];
+  dim_indicador -> fato_indicador [label=" ² (id_indicador, regime)", fontsize=8, fontcolor="#5b6d80"];
+  dim_indicador -> ajuste_financiamento;
+  dim_periodo   -> ajuste_financiamento;
+}

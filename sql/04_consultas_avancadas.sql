@@ -47,6 +47,41 @@ SELECT q.ano, c.regime, q.quintil,
 
 
 -- ---------------------------------------------------------------------
+-- A1b. OS MESMOS QUINTIS, DENTRO DE CADA FAIXA DE PORTE
+--      O gasto per capita cai com o porte (mediana de R$ 1.815 nos
+--      municípios até 5 mil contra R$ 328 acima de 100 mil, em 2024) e o
+--      desempenho também varia com o porte. Quintis estaduais misturam os
+--      dois efeitos. Aqui o NTILE é particionado por ano E porte: cada
+--      município é comparado só com os de mesmo porte.
+-- ---------------------------------------------------------------------
+WITH base AS (
+    SELECT c.ano, c.regime, g.porte, c.percentual,
+           NTILE(5) OVER (PARTITION BY c.ano, g.porte ORDER BY g.gasto_ab_pc) AS quintil_no_porte
+      FROM vw_desempenho_composto c
+      JOIN mv_gasto_anual g ON g.cod_ibge6 = c.cod_ibge6 AND g.exercicio = c.ano
+     WHERE g.gasto_ab_pc IS NOT NULL AND c.ano <= 2024
+)
+SELECT ano, regime, quintil_no_porte,
+       count(*)                                                                AS municipios,
+       PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY percentual)::numeric(5,1)   AS mediana_desempenho
+  FROM base
+ GROUP BY ano, regime, quintil_no_porte
+ ORDER BY ano, quintil_no_porte;
+
+--      Mediana do gasto e do desempenho por porte, para ver os dois efeitos.
+SELECT g.porte,
+       count(*)                                                                  AS municipios,
+       PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY g.gasto_ab_pc)::numeric(8,0)  AS gasto_pc_mediano,
+       PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY g.pct_ab_na_saude)::numeric(5,1) AS pct_ab_na_saude,
+       PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY c.percentual)::numeric(5,1)   AS desempenho_mediano
+  FROM mv_gasto_anual g
+  JOIN vw_desempenho_composto c ON c.cod_ibge6 = g.cod_ibge6 AND c.ano = g.exercicio
+ WHERE g.exercicio = 2024
+ GROUP BY g.porte
+ ORDER BY g.porte;
+
+
+-- ---------------------------------------------------------------------
 -- A2. QUINTIS POR INDICADOR (2023, último ano com pagamento pleno)
 --     Diferença de mediana entre o 5º e o 1º quintil, por indicador, com e
 --     sem os municípios de até 5 mil habitantes.
@@ -126,6 +161,16 @@ SELECT ano, regime, quartil_var_gasto,
 -- ---------------------------------------------------------------------
 -- A visão vw_posicao_no_grupo (02_analitico.sql) faz a junção reflexiva;
 -- aqui, os casos discrepantes de 2023.
+
+--      Resumo: a posição no gasto prevê a posição no desempenho dentro do
+--      grupo? Correlação entre as duas posições, por ano.
+SELECT ano,
+       ROUND(CORR(posicao_gasto, posicao_desempenho)::numeric, 3)               AS corr_posicoes,
+       ROUND(AVG(posicao_desempenho) FILTER (WHERE posicao_gasto >= 75), 1)     AS desempenho_quem_mais_gasta,
+       ROUND(AVG(posicao_desempenho) FILTER (WHERE posicao_gasto <= 25), 1)     AS desempenho_quem_menos_gasta
+  FROM vw_posicao_no_grupo
+ WHERE ano <= 2024
+ GROUP BY ano ORDER BY ano;
 
 SELECT m.nome, m.crs, v.populacao, v.faixa_populacao_grupo,
        v.gasto_ab_pc, v.posicao_gasto, v.desempenho, v.posicao_desempenho, v.discrepancia

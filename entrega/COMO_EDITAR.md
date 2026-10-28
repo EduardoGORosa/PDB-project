@@ -1,5 +1,31 @@
 # Entregáveis — o que é cada arquivo
 
+## Entregas de outubro–dezembro
+
+| Entrega | Para submeter | Fonte |
+|---|---|---|
+| **Relatório parcial** | `relatorio_parcial.pdf` | gerado de `relatorio_final.html` por `gera_parcial.py` |
+| **Relatório final** | `relatorio_final.pdf` | `relatorio_final.html` |
+| **Apresentação final** — 11 slides | `apresentacao_final.pdf` | `apresentacao_final.html` |
+
+Todo número nesses documentos saiu de consulta à base (`sql/03_*`, `sql/04_*`)
+ou de ato normativo citado. As figuras vêm de `docs/figuras.py` (lê o banco) e
+as telas da aplicação, de capturas do Streamlit (`docs/img/app_*.png`).
+
+**Antes de submeter:** preencher a seção "Responsabilidades" (em vermelho) do
+relatório final — o parcial a herda ao ser regerado.
+
+```bash
+python docs/figuras.py                 # se a base mudou
+python entrega/gera_parcial.py         # sempre que o relatório final mudar
+cd entrega
+chromium --headless --no-pdf-header-footer --print-to-pdf=relatorio_final.pdf relatorio_final.html
+chromium --headless --no-pdf-header-footer --print-to-pdf=relatorio_parcial.pdf relatorio_parcial.html
+chromium --headless --no-pdf-header-footer --print-to-pdf=apresentacao_final.pdf apresentacao_final.html
+```
+
+## Entrega 01 (agosto) — proposta
+
 Duas submissões, cada uma em três formatos. **Os `.html` são a fonte de maior
 fidelidade**; os `.pptx` / `.docx` existem para edição rápida em PowerPoint,
 Word, Google Slides ou Google Docs, com pequenas diferenças de diagramação.

@@ -42,7 +42,8 @@ def consulta(sql: str, params: tuple = ()) -> pd.DataFrame:
         df = pd.DataFrame(cur.fetchall(), columns=[d.name for d in cur.description])
     # NUMERIC chega como Decimal; o plotly quer float
     for c in df.columns:
-        if df[c].dtype == object and len(df) and type(df[c].dropna().iloc[0]).__name__ == "Decimal":
+        valores = df[c].dropna()
+        if df[c].dtype == object and len(valores) and type(valores.iloc[0]).__name__ == "Decimal":
             df[c] = df[c].astype(float)
     return df
 
@@ -87,7 +88,13 @@ def panorama() -> None:
     if sem_pequenos:
         df = df[df.populacao >= 5000]
 
-    df["quintil"] = pd.qcut(df.gasto_ab_pc.rank(method="first"), 5, labels=[1, 2, 3, 4, 5]).astype(int)
+    no_porte = st.toggle("Quintis dentro de cada faixa de porte", help=(
+        "O gasto per capita cai com o porte, e o desempenho também varia com o porte. "
+        "Ligado, cada município só é comparado com os de mesmo porte."))
+    grupos = df.groupby("porte") if no_porte else [(None, df)]
+    df["quintil"] = pd.concat([
+        pd.qcut(g.gasto_ab_pc.rank(method="first"), 5, labels=[1, 2, 3, 4, 5]).astype(int)
+        for _, g in grupos])
     eixo_y = "ISF (0–10)" if medida == ISF else "desempenho (%)"
 
     fig = px.scatter(df, x="gasto_ab_pc", y="desempenho",

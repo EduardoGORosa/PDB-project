@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="pt-BR">
+<meta charset="utf-8">
+<title>Relatório parcial — Gasto × Desempenho na Atenção Primária</title>
+<style>
+  @page { size: A4; margin: 20mm 19mm 20mm 19mm; }
+  * { box-sizing: border-box; }
+  body { font-family: "Inter", "Helvetica Neue", Arial, sans-serif; color: #16202b;
+         font-size: 10.2pt; line-height: 1.5; margin: 0; background: #fff;
+         -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  h1 { font-size: 21pt; line-height: 1.15; margin: 0 0 6pt; letter-spacing: -.4pt; }
+  h2 { font-size: 13.5pt; margin: 20pt 0 6pt; color: #0f2f4a; border-bottom: 1pt solid #c3d4e0;
+       padding-bottom: 3pt; break-after: avoid; }
+  h3 { font-size: 11pt; margin: 13pt 0 4pt; color: #0f2f4a; break-after: avoid; }
+  p { margin: 0 0 7pt; text-align: justify; hyphens: auto; }
+  .sub { font-size: 11.5pt; color: #4a5b6d; margin: 0 0 12pt; }
+  .meta { font-size: 9.5pt; color: #4a5b6d; border-top: 3pt solid #0f5c8c; padding-top: 8pt;
+          margin-bottom: 14pt; display: grid; grid-template-columns: 110pt 1fr; gap: 2pt 10pt; }
+  .meta b { color: #16202b; }
+  .resumo { background: #f2f6f9; border-left: 4pt solid #0f5c8c; padding: 9pt 12pt; margin: 0 0 10pt; }
+  .resumo p:last-child { margin: 0; }
+  .achado { background: #fff7ed; border-left: 4pt solid #eb6834; padding: 8pt 12pt; margin: 8pt 0 10pt; }
+  .achado p:last-child { margin: 0; }
+  table { border-collapse: collapse; width: 100%; font-size: 8.8pt; margin: 4pt 0 10pt;
+          break-inside: avoid; }
+  th { text-align: left; font-size: 7.8pt; text-transform: uppercase; letter-spacing: .5pt;
+       color: #5b6d80; border-bottom: 1pt solid #9fb4c4; padding: 3pt 6pt 3pt 0; }
+  td { border-bottom: .5pt solid #e1e8ee; padding: 3pt 6pt 3pt 0; vertical-align: top; }
+  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+  figure { margin: 6pt 0 12pt; break-inside: avoid; }
+  figure img { width: 100%; }
+  figcaption { font-size: 8.6pt; color: #5b6d80; margin-top: 3pt; }
+  code { font-family: "JetBrains Mono", Menlo, monospace; font-size: 8.6pt; background: #f2f4f6;
+         padding: 0 2pt; border-radius: 2pt; }
+  ul, ol { margin: 0 0 7pt 15pt; padding: 0; }
+  li { margin: 0 0 3pt; }
+  .ref p { text-align: left; padding-left: 14pt; text-indent: -14pt; font-size: 9pt; }
+  .pend { color: #b02a37; font-weight: 600; }
+  .quebra { break-before: page; }
+</style>
+
+<h1>Financiamento e desempenho na Atenção Primária</h1>
+<p class="sub">Integração do gasto municipal em Atenção Básica com os indicadores do Ministério da Saúde — Rio Grande do Sul, 2018–2024. Relatório parcial.</p>
+<div class="meta">
+  <b>Disciplina</b><span>INF01006 — Projeto de Banco de Dados (UFRGS)</span>
+  <b>Integrantes</b><span>Eduardo Rosa, Rafael Stephanou e Vinícius Herzog (líder)</span>
+  <b>Cooperação</b><span>Extensão PET-Saúde Digital, GAT05 Indicadores</span>
+  <b>Tecnologias</b><span>PostgreSQL · Python (psycopg, pandas) · Streamlit · Git</span>
+  <b>Repositório</b><span><code>carrega.py</code> reconstrói a base inteira em ~20 s; consultas em <code>sql/</code>; aplicação em <code>app/</code></span>
+</div>
+
+<div class="resumo">
+<p><b>Resumo.</b> Este relatório parcial documenta a construção da base: a extração das duas fontes
+(FINBRA/SICONFI e SISAB), a dimensão de indicadores construída a partir das Notas Técnicas e Portarias, o
+modelo relacional, a carga com suas verificações de integração e qualidade, as consultas básicas e o
+levantamento de trabalhos relacionados. A base integra os 497 municípios do RS de 2018 a 2024; a junção
+pelo código IBGE casa os municípios nos dois sentidos em todos os exercícios, e a mudança de regra de 2022
+fica garantida no esquema por chaves estrangeiras compostas. Ao reconstituir os atos normativos,
+verificamos que o resultado dos indicadores só determinou integralmente o repasse em 2022Q2–2023Q3, o que
+passa a ser marcado em cada quadrimestre. As análises da pergunta central (consultas avançadas) e a
+aplicação ficam para a etapa final.</p>
+</div>
+<h2>1. Objetivo e contexto</h2>
+<p>Entre 2020 e 2024, parte do repasse federal para a Atenção Primária à Saúde (APS) dependeu do desempenho
+dos municípios em sete indicadores assistenciais (Programa Previne Brasil, Portaria GM/MS nº 2.979/2019).
+Os municípios, por sua vez, declaram ao Tesouro Nacional o que gastam em Atenção Básica. As duas
+informações são públicas e cobrem o mesmo universo, mas não são disponibilizadas de forma integrada. O
+objetivo do trabalho foi projetar e implementar uma base que as integre, para os 497 municípios do RS, e
+usá-la para observar a relação entre o investimento municipal em Atenção Básica e o desempenho assistencial.</p>
+<p>A pergunta é de associação, não de causalidade. A subfunção 10.301 reúne recursos próprios, estaduais e
+federais, enquanto o pagamento por desempenho é uma fração do repasse federal. Há ainda causalidade
+reversa possível: municípios com melhor desempenho recebiam mais e podiam, por isso, gastar mais.</p>
+
+<h2>2. Fontes e extração</h2>
+<table>
+<tr><th>Fonte</th><th>Conteúdo</th><th>Período</th><th>Grão</th><th>Acesso</th></tr>
+<tr><td>FINBRA / Tesouro Nacional</td><td>Despesa por função e subfunção (Anexo I-E), 5 estágios; população</td><td>2018–2025</td><td>município × ano</td><td>CSV do SICONFI (2020–2025); API SICONFI/DCA (2018–2019)</td></tr>
+<tr><td>SISAB / Ministério da Saúde</td><td>Percentual alcançado nos 7 indicadores</td><td>2018Q1–2025Q1</td><td>município × quadrimestre</td><td>14 CSV: 7 indicadores × 2 painéis</td></tr>
+<tr><td>Notas Técnicas e Portarias</td><td>Regras, metas, pesos, ajustes de financiamento</td><td>—</td><td>indicador × regime</td><td>NT 5/2020; NT 11 e 12/2022; NT 13–19/2022; Portarias GM/MS</td></tr>
+<tr><td>DATASUS e SES-RS</td><td>Município → região de saúde → coordenadoria</td><td>vigente</td><td>município</td><td>Base territorial jun/2026; Portaria SES-RS nº 320/2025</td></tr>
+</table>
+<p><b>FINBRA.</b> Os arquivos do portal são CSV em latin-1, separados por ponto e vírgula, com vírgula
+decimal e três linhas de preâmbulo antes do cabeçalho. Os exercícios de 2018 e 2019 não estavam nos
+downloads originais; foram obtidos pela API de dados do SICONFI (uma requisição por município, ~1.000
+requisições) e gravados no mesmo formato do portal, para que um único leitor sirva aos dois caminhos.
+Antes de confiar na API, comparamos API e portal num exercício presente nos dois: 3.239 de 3.239 linhas
+idênticas numa amostra de 16 municípios de 2020.</p>
+<p><b>SISAB.</b> Cada arquivo traz um indicador, com os municípios nas linhas e os quadrimestres nas
+colunas; a carga despivota esse formato largo. A consulta por indicador retorna os 497 municípios, enquanto
+a "Visão geral" retorna 489, motivo pelo qual usamos a primeira. O arquivo baixado não informa qual "visão
+das equipes" o gerou. Identificamos a visão pelo próprio dado: os dados abertos da API DEMAS trazem, para
+2024, o resultado nas três visões, e os valores do SISAB coincidem com a visão <i>todas as equipes</i> em
+8.946 de 8.946 casos (contra 93,7% para homologadas e 91,2% para válidas). É a visão prevista no
+anteprojeto. A API não entra no modelo, por cobrir só 2024.</p>
+<p><b>Regras dos indicadores.</b> Nenhuma base entrega a regra, a meta ou o peso de cada indicador. A
+dimensão de indicadores foi construída a partir do anexo da Nota Técnica nº 11/2022-SAPS/MS, que apresenta
+cada indicador na forma "de" (NT nº 5/2020-DESF/SAPS/MS) / "para" (regra de 2022), e das fichas
+individuais (NT nº 13 a 19/2022). A NT 11/2022 foi substituída pela NT nº 12/2022 em julho de 2022, com as
+mesmas metas e nova regra de escolha do denominador.</p>
+<p><b>Divisão regional.</b> A coordenadoria regional de saúde não consta das fontes. Usamos as 30 regiões de
+saúde da base territorial do DATASUS e a correspondência região → coordenadoria da Portaria SES-RS nº
+320/2025 (18 CRS). O DATASUS ainda usa a numeração antiga de 19 CRS; Cristal e Tupanciretã divergem entre as
+duas fontes, e a divergência está registrada na tabela de qualidade.</p>
+
+<h2>3. A regra e o dinheiro: o que cada quadrimestre significa</h2>
+<p>O anteprojeto previa marcar os quadrimestres em que a Portaria GM/MS nº 102/2022 fixou o alcance de
+indicadores em 100% para fins de financiamento. Ao reconstituir os atos normativos, a situação se mostrou
+mais ampla, e com consequência direta para a análise:</p>
+<ul>
+<li><b>Defasagem.</b> O pagamento de um quadrimestre usa o resultado do quadrimestre anterior (NT 11/2022, §5.6):
+a parcela do 1º quadrimestre de 2022 usou o dado de 2021Q3.</li>
+<li><b>2020–2021.</b> As parcelas de janeiro a agosto de 2020 seguiram a regra de transição (Portaria
+2.979/2019); as de 2021 foram pagas como 100% do potencial (Portarias 166/2021 e 2.396/2021), por causa da
+pandemia. Os dados de 2020Q1 a 2021Q2 não afetaram o repasse.</li>
+<li><b>Portaria 102/2022, art. 6º-A.</b> No dado de 2021Q3, os indicadores 3 a 7 foram considerados como meta
+atingida; no de 2022Q1, os indicadores 6 e 7.</li>
+<li><b>Fim do programa.</b> A Portaria GM/MS nº 3.493/2024 revogou o modelo com efeitos a partir da parcela de
+maio de 2024. Pela mesma defasagem, os dados de 2024 em diante não pagaram pelo Previne.</li>
+<li><b>2018–2019.</b> Anteriores ao programa: o painel do SISAB apresenta esses anos calculados com a regra de
+2020.</li>
+</ul>
+<table>
+<tr><th>Quadrimestres de dados</th><th>Regime de cálculo</th><th>Efeito no repasse</th><th>Ato</th></tr>
+<tr><td>2018Q1–2019Q3</td><td>NT 5/2020</td><td>anterior ao programa</td><td>—</td></tr>
+<tr><td>2020Q1–2021Q2</td><td>NT 5/2020</td><td>sem efeito (repasse fixado)</td><td>Portarias 2.979/2019, 1.740/2020, 166/2021, 2.396/2021</td></tr>
+<tr><td>2021Q3</td><td>NT 5/2020</td><td>parcial (ind. 3–7 fixados)</td><td>Portaria 102/2022</td></tr>
+<tr><td>2022Q1</td><td>NT 11/2022</td><td>parcial (ind. 6–7 fixados)</td><td>Portaria 102/2022</td></tr>
+<tr><td>2022Q2–2023Q3</td><td>NT 11/2022 → 12/2022</td><td><b>pleno</b></td><td>—</td></tr>
+<tr><td>2024Q1 em diante</td><td>NT 12/2022</td><td>posterior ao programa</td><td>Portaria 3.493/2024</td></tr>
+</table>
+<p>A correspondência dado → parcela para 2020–2021 é inferida da defasagem descrita na NT 11/2022, e o texto
+da Portaria 1.740/2020 só foi conferido em fonte secundária; essas ressalvas estão gravadas no campo
+<code>observacao</code> de cada ajuste.</p>
+
+<h2>4. Modelo de dados</h2>
+<figure><img src="../docs/img/modelo_er.png" alt="Diagrama entidade-relacionamento">
+<figcaption>Figura 1. Esquema relacional. Em laranja, as tabelas de fato; em cinza, as tabelas de apoio. ¹ e ²: chaves estrangeiras compostas.</figcaption></figure>
+<p>O esquema segue a proposta do anteprojeto, com quatro acréscimos justificados pelo que os dados mostraram
+(<code>dim_regime</code>, <code>ajuste_financiamento</code>, <code>efeito_financeiro</code> e
+<code>log_qualidade</code>) e a coordenadoria normalizada em duas tabelas. As decisões principais:</p>
+<ol>
+<li><b>Dimensão de indicadores versionada.</b> Cada versão de um indicador é uma linha, com regra de numerador e
+denominador, meta, peso, nota técnica e intervalo de vigência. A chave é um identificador próprio
+(<code>id_indicador</code>), porque o código do indicador se repete entre versões. São 14 linhas: 7
+indicadores × 2 regimes. A meta do pré-natal cai de 60% para 45%; as demais se mantêm; os pesos somam 10.</li>
+<li><b>Vigência garantida pelo esquema.</b> <code>fato_indicador</code> carrega o regime e participa de duas
+chaves estrangeiras compostas: <code>(quadrimestre, regime) → dim_periodo</code> e
+<code>(id_indicador, regime) → dim_indicador</code>. Um resultado de 2021 não consegue referenciar a versão
+de 2022 do indicador. A regra de negócio central do trabalho fica declarada no esquema, sem gatilho.</li>
+<li><b>Duas chaves para o município.</b> O FINBRA identifica o município pelo código IBGE de 7 dígitos; o SISAB,
+pelo de 6. <code>cod_ibge7</code> é a chave primária, <code>cod_ibge6</code> é <code>UNIQUE</code> (alvo
+da FK de <code>fato_indicador</code>), e <code>CHECK (cod_ibge7 / 10 = cod_ibge6)</code> garante a
+relação. A junção casa os 497 municípios nos dois sentidos, em todos os exercícios.</li>
+<li><b>População como fato datado</b> (<code>pop_municipio</code>), para que o per capita de cada ano use a
+população daquele ano.</li>
+<li><b>Coordenadoria como atributo da região.</b> Cada região de saúde pertence a uma CRS; guardar a CRS no
+município permitiria dois municípios da mesma região em coordenadorias diferentes (dependência transitiva).</li>
+<li><b><code>dim_conta.nivel</code></b> distingue total, função e subfunção. Verificamos que as subfunções de
+saúde, incluindo o resíduo <code>FU10 – Demais Subfunções</code>, reproduzem a função 10 – Saúde ao
+centavo; o risco de dupla contagem está em somar níveis diferentes, e toda consulta filtra um único nível.</li>
+<li><b><code>dim_periodo.efeito_financeiro</code> e <code>ajuste_financiamento</code></b> registram a seção 3:
+o percentual em <code>fato_indicador</code> é sempre o alcance real, e o que foi considerado no pagamento
+fica numa tabela à parte, com o ato normativo.</li>
+</ol>
+<p><b>Camada analítica.</b> As escolhas metodológicas da seção 4 do anteprojeto ficam em visões, uma única
+vez: despesa no estágio <i>liquidada</i>; desempenho anual como média dos três quadrimestres, associado à
+despesa do mesmo exercício; nenhuma média atravessando o corte de regime. Três visões são materializadas por
+custo (<code>mv_gasto_anual</code> varre ~853.864 linhas de despesa; <code>mv_serie_estadual</code>
+calcula médias ponderadas por quadrimestre; <code>mv_grupo_referencia</code> é uma junção reflexiva de
+~500² pares por ano). A aplicação consulta essas visões e não repete lógica analítica.</p>
+<table>
+<tr><th>Tabela</th><th class="n">Linhas</th><th>Tabela</th><th class="n">Linhas</th></tr>
+<tr><td>fato_despesa</td><td class="n">853.864</td><td>dim_conta</td><td class="n">193</td></tr>
+<tr><td>fato_indicador</td><td class="n">76.538</td><td>dim_periodo</td><td class="n">22</td></tr>
+<tr><td>pop_municipio</td><td class="n">3.976</td><td>dim_indicador</td><td class="n">14</td></tr>
+<tr><td>dim_municipio</td><td class="n">497</td><td>ajuste_financiamento</td><td class="n">42</td></tr>
+<tr><td>dim_regiao_saude / dim_coordenadoria</td><td class="n">30 / 18</td><td>log_qualidade</td><td class="n">10</td></tr>
+</table>
+<p>O dicionário de dados completo, com origem e semântica de cada coluna, está em
+<code>docs/dicionario_dados.md</code>.</p>
+
+<h2>5. Carga, integração e qualidade dos dados</h2>
+<p>A carga (<code>carrega.py</code>) recria o esquema e carrega, em ordem, o FINBRA, a divisão regional, o SISAB
+e a camada analítica, via <code>COPY</code>, em cerca de 20 segundos. Ela falha, em vez de seguir, se o
+conjunto de municípios do FINBRA diferir do SISAB, se aparecer um estágio de despesa desconhecido, se um
+arquivo do SISAB não tiver entrada no dicionário de indicadores, ou se um quadrimestre cair fora do regime
+do seu arquivo. Ao final, um relatório de verificação lista volumes, cobertura por período e o registro de
+inconsistências.</p>
+<table>
+<tr><th>Verificação</th><th>Resultado</th></tr>
+<tr><td>Junção FINBRA × SISAB pelo código IBGE</td><td>497 ↔ 497 em todos os exercícios, sem sobra</td></tr>
+<tr><td>Valores nulos no SISAB</td><td>0 em 76.538 células</td></tr>
+<tr><td>Subfunção 10.301 declarada</td><td>493 a 497 municípios por exercício; 8 lacunas em 3.479 município-exercícios de 2018–2024</td></tr>
+<tr><td>Sem a subfunção 10.301</td><td>Barão de Cotegipe (2021) e Tenente Portela (2023): declarações truncadas (21 e 18 linhas). Brochier e Tupandi (2018–2019), Cacequi e Cambará do Sul (2018): declarações completas, com gasto em saúde, mas sem a 10.301. Em todos, <code>gasto_ab</code> fica NULL, não zero</td></tr>
+<tr><td>Gasto implausível</td><td>26 casos abaixo de 10% da mediana do ano (ex.: R$ 0,71 por habitante, Cambará do Sul, 2021)</td></tr>
+<tr><td>Visão das equipes do SISAB</td><td>"todas as equipes", 8.946/8.946</td></tr>
+<tr><td>Visão geral × por indicador</td><td>489 × 497 municípios</td></tr>
+</table>
+<p><b>Gasto atípico.</b> Os valores muito baixos ocorrem em municípios cuja participação da 10.301 no gasto em
+saúde é de 0% a 14%, contra uma mediana estadual de 69,6% em 2024. Os municípios que, em 2018–2019,
+declararam gasto em saúde sem nenhum valor na 10.301 são o caso extremo do mesmo fenômeno. É o padrão descrito por Vieira et al. (2022):
+parte do gasto em APS é classificada em outras subfunções, e a 10.301 subestima o gasto real. Esses casos
+ficam na base (são o dado declarado) e são listados na visão <code>vw_gasto_atipico</code> e na aplicação.</p>
+<figure><img src="../docs/img/fig_zeros.png" alt="Percentual de resultados iguais a zero por quadrimestre">
+<figcaption>Figura 2. Proporção de resultados iguais a zero no SISAB, por quadrimestre (7 indicadores × 497 municípios).</figcaption></figure>
+<p><b>Zeros no SISAB.</b> Um terço dos resultados de 2018 é exatamente zero; a partir de 2023, cerca de 1%.
+A queda é contínua, sem degrau em 2022, e acompanha a adesão das equipes ao registro no SISAB. Um zero no
+início da série frequentemente indica ausência de registro, e não de atendimento, o que reforça a limitação
+de que os indicadores medem processos registrados.</p>
+
+<h2>6. Consultas básicas</h2>
+<p>O arquivo <code>sql/03_consultas_basicas.sql</code> (B1–B10) cobre o primeiro conjunto do anteprojeto:
+dicionário dos indicadores; gasto per capita por município e exercício; distribuição do gasto per capita;
+composição do orçamento de saúde por subfunção, no estado e em Porto Alegre; resultado de cada indicador por
+município e quadrimestre, com a meta da versão vigente; ordenação por desempenho; evolução de cada indicador;
+cobertura e completude de cada fonte; agregação por coordenadoria.</p>
+<table>
+<tr><th>Exercício</th><th class="n">Municípios</th><th class="n">Mínimo</th><th class="n">P10</th><th class="n">Mediana</th><th class="n">Média</th><th class="n">P90</th><th class="n">Máximo</th></tr>
+<tr><td>2018</td><td class="n">493</td><td class="n">30,65</td><td class="n">212</td><td class="n">617</td><td class="n">700</td><td class="n">1.327</td><td class="n">2.211</td></tr>
+<tr><td>2019</td><td class="n">495</td><td class="n">1,66</td><td class="n">211</td><td class="n">643</td><td class="n">731</td><td class="n">1.374</td><td class="n">2.809</td></tr>
+<tr><td>2020</td><td class="n">497</td><td class="n">3,41</td><td class="n">247</td><td class="n">718</td><td class="n">800</td><td class="n">1.504</td><td class="n">3.056</td></tr>
+<tr><td>2021</td><td class="n">496</td><td class="n">0,71</td><td class="n">266</td><td class="n">791</td><td class="n">893</td><td class="n">1.706</td><td class="n">3.715</td></tr>
+<tr><td>2022</td><td class="n">497</td><td class="n">36,88</td><td class="n">331</td><td class="n">988</td><td class="n">1.121</td><td class="n">2.114</td><td class="n">4.535</td></tr>
+<tr><td>2023</td><td class="n">496</td><td class="n">21,86</td><td class="n">386</td><td class="n">1.088</td><td class="n">1.244</td><td class="n">2.329</td><td class="n">5.207</td></tr>
+<tr><td>2024</td><td class="n">497</td><td class="n">87,09</td><td class="n">415</td><td class="n">1.214</td><td class="n">1.380</td><td class="n">2.579</td><td class="n">4.841</td></tr>
+</table>
+<p>Gasto liquidado em Atenção Básica por habitante (R$ correntes). A distribuição é assimétrica (média acima
+da mediana, P90 cerca de seis vezes o P10), o que motivou a análise por quintis em vez de um coeficiente de
+correlação. Em 2024, a Atenção Básica respondeu por 39,0% da despesa liquidada em saúde do conjunto dos
+municípios, contra 47,4% da Assistência Hospitalar e Ambulatorial.</p>
+
+<h2>7. Trabalhos relacionados</h2>
+<p>Cabreira et al. (2018) analisaram a despesa municipal em APS dos municípios do RS em 2011–2013 e
+concluíram que ela acompanha políticas federais de indução mais que fatores locais de demanda; lá o gasto é a
+variável resposta. Harzheim et al. (2020) apresentam o desenho do Previne Brasil e Massuda (2020) o
+critica. Costa, Silva e Jatobá (2022), Schönholzer et al. (2023) e Souza et al. (2024) avaliam os
+indicadores com dados do SISAB em escala nacional, sem variável de gasto e sem tratar a mudança de regra.
+Soares, Camargos e Noronha (2023) relacionam financiamento e resultados do Previne em Minas Gerais, a partir
+do repasse federal. Vieira et al. (2022) mostram que o gasto declarado na subfunção 10.301 subestima o gasto
+em APS, o que fundamenta a nossa limitação sobre a variável de gasto.</p>
+<p>O trabalho se diferencia pelo período (2018–2024), pela direção da pergunta (gasto como variável
+explicativa), pela análise por quintis e por grupos de referência de porte prevista em vez de correlação simples,
+pela ponderação por população e, principalmente, pela modelagem explícita da mudança de regra e do efeito
+financeiro de cada período. A lista completa, com DOI, está em <code>docs/trabalhos_relacionados.md</code>.</p>
+
+<h2>8. Limitações</h2>
+<ul>
+<li><b>Associação, não causalidade.</b> A subfunção 10.301 é o gasto total do município em Atenção Básica; o
+pagamento por desempenho é uma fração do repasse federal. Há causalidade reversa possível.</li>
+<li><b>A variável de gasto é declaratória</b> e subestima o gasto em APS onde parte dele é classificada em
+outras subfunções (Vieira et al., 2022).</li>
+<li><b>Sem numerador e denominador.</b> O SISAB publica só o percentual. Em municípios pequenos o percentual
+oscila por ter poucos casos, e a escolha entre denominador identificado e estimado afeta o resultado: um
+cadastro incompleto pode elevar o percentual.</li>
+<li><b>Os indicadores medem processos registrados</b>, não desfechos em saúde. A proporção de zeros em 2018
+mostra o peso do registro no início da série.</li>
+<li><b>A troca da NT 11 pela NT 12/2022</b>, em julho de 2022, mudou a regra do denominador dentro do mesmo
+regime; tratamos as duas como um regime porque metas, numeradores e o painel do SISAB são os mesmos.</li>
+<li><b>Correspondência dado → parcela em 2020–2021</b> inferida da defasagem descrita na NT 11/2022.</li>
+</ul>
+
+<h2>9. Próximos passos</h2>
+<ul>
+<li><b>Consultas avançadas</b> (02/11): quintis de gasto com <code>NTILE</code>, variação anual com
+<code>LAG</code> por regime, grupos de referência por porte com junção reflexiva, agregações por
+coordenadoria com CTEs encadeadas, médias ponderadas e análise sem municípios pequenos.</li>
+<li><b>Controle do porte.</b> As consultas básicas já mostram que o gasto per capita cai fortemente com o
+porte do município; a análise por quintis precisa ser repetida dentro de cada faixa de porte para não
+atribuir à gestão o que decorre da escala.</li>
+<li><b>Aplicação de visualização</b> (30/11): as quatro visões do anteprojeto, sobre as visões
+materializadas do banco.</li>
+<li><b>Apresentação e relatório final</b> (01/12).</li>
+</ul>
+<h2>10. Responsabilidades</h2>
+<p class="pend">A preencher pelo grupo: responsável por cada atividade, conforme exigido nas entregas.</p>
+<table>
+<tr><th>Atividade</th><th>Responsável</th></tr>
+<tr><td>Extração das fontes (FINBRA, SISAB, API)</td><td class="pend">—</td></tr>
+<tr><td>Dimensão de indicadores a partir das Notas Técnicas e Portarias</td><td class="pend">—</td></tr>
+<tr><td>Modelagem e criação da base</td><td class="pend">—</td></tr>
+<tr><td>Levantamento de trabalhos relacionados</td><td class="pend">—</td></tr>
+<tr><td>Consultas básicas e avançadas</td><td class="pend">—</td></tr>
+<tr><td>Aplicação de visualização</td><td class="pend">—</td></tr>
+<tr><td>Relatórios e apresentação</td><td class="pend">—</td></tr>
+</table>
+
+<h2>Referências</h2>
+<div class="ref">
+<p>BRASIL. Ministério da Saúde. Portaria GM/MS nº 2.979, de 12 de novembro de 2019. Institui o Programa Previne Brasil.</p>
+<p>BRASIL. Ministério da Saúde. Portaria GM/MS nº 3.222, de 10 de dezembro de 2019. Dispõe sobre os indicadores do pagamento por desempenho.</p>
+<p>BRASIL. Ministério da Saúde. Portarias GM/MS nº 166, de 27 de janeiro de 2021, e nº 2.396, de 22 de setembro de 2021.</p>
+<p>BRASIL. Ministério da Saúde. Portaria GM/MS nº 102, de 20 de janeiro de 2022.</p>
+<p>BRASIL. Ministério da Saúde. Portaria GM/MS nº 3.493, de 10 de abril de 2024.</p>
+<p>BRASIL. Ministério da Saúde. Nota Técnica nº 5/2020-DESF/SAPS/MS; Notas Técnicas nº 11/2022, nº 12/2022 e nº 13 a 19/2022-SAPS/MS.</p>
+<p>CABREIRA, F. S.; RITTER, F.; AGUIAR, V. R.; CELESTE, R. K. Despesas municipais em atenção primária à saúde no Rio Grande do Sul, Brasil: um estudo ecológico. <i>Cadernos de Saúde Pública</i>, v. 34, n. 12, e00150117, 2018. DOI: 10.1590/0102-311X00150117.</p>
+<p>COSTA, N. R.; SILVA, P. R. F.; JATOBÁ, A. A avaliação de desempenho da atenção primária: balanço e perspectiva para o programa Previne Brasil. <i>Saúde em Debate</i>, v. 46, n. esp. 8, p. 8-20, 2022. DOI: 10.1590/0103-11042022e801.</p>
+<p>HARZHEIM, E. et al. Novo financiamento para uma nova Atenção Primária à Saúde no Brasil. <i>Ciência &amp; Saúde Coletiva</i>, v. 25, n. 4, p. 1361-1374, 2020. DOI: 10.1590/1413-81232020254.35062019.</p>
+<p>MASSUDA, A. Mudanças no financiamento da Atenção Primária à Saúde no Sistema de Saúde Brasileiro: avanço ou retrocesso? <i>Ciência &amp; Saúde Coletiva</i>, v. 25, n. 4, p. 1181-1188, 2020. DOI: 10.1590/1413-81232020254.01022020.</p>
+<p>RIO GRANDE DO SUL. Secretaria da Saúde. Portaria SES nº 320/2025, Anexo I — Relação dos municípios por Região de Saúde, CRS e Macrorregião.</p>
+<p>SCHÖNHOLZER, T. E. et al. Indicadores de desempenho da Atenção Primária do Programa Previne Brasil. <i>Revista Latino-Americana de Enfermagem</i>, v. 31, e4007, 2023. DOI: 10.1590/1518-8345.6640.4009.</p>
+<p>SOARES, C. S.; CAMARGOS, M. C. S.; NORONHA, K. V. M. S. Financiamento da atenção primária à saúde e os resultados dos componentes do Programa Previne Brasil em Minas Gerais. <i>Revista Gestão &amp; Planejamento</i>, v. 24, p. 223-240, 2023. DOI: 10.53706/gep.v.24.7962.</p>
+<p>SOUZA, C. D. F. et al. Primary care performance measurement in Brazil (Previne Brasil Program), 2022–2023. <i>BMC Health Services Research</i>, v. 24, art. 949, 2024. DOI: 10.1186/s12913-024-11409-x.</p>
+<p>VIEIRA, F. S.; ALMEIDA, A. T. C.; SERVO, L. M. S.; BENEVIDES, R. P. S. Gasto total dos municípios em atenção primária à saúde no Brasil: um método para ajuste da despesa declarada de 2015 a 2020. <i>Cadernos de Saúde Pública</i>, v. 38, n. 5, e00280221, 2022. DOI: 10.1590/0102-311XPT280221.</p>
+</div>
+</html>
