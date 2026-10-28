@@ -15,8 +15,13 @@ as telas da aplicação, de capturas do Streamlit (`docs/img/app_*.png`).
 **Antes de submeter:** preencher a seção "Responsabilidades" (em vermelho) do
 relatório final — o parcial a herda ao ser regerado.
 
+Os PDFs, o relatório parcial e tudo em `docs/img/` são gerados e **não são
+versionados** (`.gitignore`): depois de clonar, regere-os com os comandos abaixo.
+
 ```bash
-python docs/figuras.py                 # se a base mudou
+python docs/figuras.py                 # figuras, a partir do banco
+dot -Tpng -Gdpi=200 docs/modelo_er.dot -o docs/img/modelo_er.png
+uv run --with playwright python docs/capturas.py   # telas; requer o app na porta 8599
 python entrega/gera_parcial.py         # sempre que o relatório final mudar
 cd entrega
 chromium --headless --no-pdf-header-footer --print-to-pdf=relatorio_final.pdf relatorio_final.html

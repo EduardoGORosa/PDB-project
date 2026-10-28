@@ -8,4 +8,33 @@ wheels/
 
 # Virtual environments
 .venv
-data
+
+# Ferramentas locais (estado do Claude Code, worktrees)
+.claude/
+
+# Dados brutos: baixados dos portais e da API do SICONFI (ver README).
+# data_ref/ é fonte construída à mão e fica versionado.
+data/
+
+# ---------------------------------------------------------------------
+# Gerados — reconstruídos pelos scripts (ver entrega/COMO_EDITAR.md)
+# ---------------------------------------------------------------------
+# figuras (docs/figuras.py), modelo ER (dot docs/modelo_er.dot) e
+# capturas da aplicação (docs/capturas.py)
+docs/img/
+
+# PDFs exportados dos .html pelo Chromium
+entrega/*.pdf
+# ... exceto os documentos sem fonte no repositório
+!entrega/Anteprojeto.pdf
+!entrega/gastoxdespesa_atencaoprimaria.pdf
+
+# relatório parcial (entrega/gera_parcial.py)
+entrega/relatorio_parcial.html
+
+# arquivos de escritório (entrega/gera_office.py) e a linha do tempo
+# (rsvg-convert entrega/linha_tempo.svg)
+entrega/*.docx
+entrega/*.pptx
+!entrega/visao_geral_modificada.docx
+entrega/linha_tempo.png
