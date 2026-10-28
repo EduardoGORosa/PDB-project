@@ -1,0 +1,179 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Visão Geral — INF01006</title>
+<style>
+  @page { size: A4; margin: 9mm 11mm; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: "Inter","Helvetica Neue",Arial,sans-serif;
+         font-size: 8.25pt; line-height: 1.27; color:#16202b; }
+  h1 { font-size: 15.8pt; margin:0 0 1mm; letter-spacing:-.35pt; line-height:1.12; }
+  .sub { font-size: 8.7pt; color:#4a5b6d; margin:0 0 2.1mm; line-height:1.32; }
+  .rule { height:2.2pt; background:#0f5c8c; margin:0 0 2.2mm; }
+  .eyebrow { font-size:7pt; letter-spacing:.85pt; text-transform:uppercase;
+             color:#0f5c8c; font-weight:700; margin:0 0 1mm; }
+  h2 { font-size:7.6pt; letter-spacing:.6pt; text-transform:uppercase; color:#0f5c8c;
+       margin:0 0 1.1mm; padding-bottom:.7mm; border-bottom:.5pt solid #c3d4e0; font-weight:700; }
+  .grid { display:grid; grid-template-columns: 1fr 1fr; gap: 2.7mm 5mm; }
+  .full { grid-column: 1 / -1; }
+  p { margin:0 0 1.2mm; text-align:justify; }
+  ol,ul { margin:0; padding-left:3.6mm; }
+  li { margin-bottom:.45mm; }
+  b,strong { color:#0b1622; }
+  .id { background:#f2f6f9; border-left:2.4pt solid #0f5c8c; padding:1.7mm 2.6mm;
+        margin:0 0 2.3mm; display:grid; grid-template-columns:auto 1fr auto 1fr; gap:.7mm 2.4mm; }
+  .id dt { font-size:7.1pt; text-transform:uppercase; letter-spacing:.5pt;
+           color:#5b6d80; font-weight:700; align-self:center; }
+  .id dd { margin:0; font-size:8.5pt; }
+  .fill { color:#b02a37; font-weight:700; }
+  table { border-collapse:collapse; width:100%; font-size:7.6pt; }
+  th { text-align:left; font-weight:700; color:#5b6d80; font-size:6.9pt;
+       text-transform:uppercase; letter-spacing:.4pt; padding:0 2mm .7mm 0;
+       border-bottom:.5pt solid #c3d4e0; }
+  td { padding:.7mm 2mm .7mm 0; border-bottom:.4pt solid #e6edf2; vertical-align:top; }
+  td.n { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .fig { background:#f7fafc; border:.5pt solid #d8e3ec; padding:1.8mm 2.2mm 1.2mm; }
+  .cap { font-size:6.9pt; color:#5b6d80; margin:.8mm 0 0; line-height:1.26; text-align:left; }
+  .kpis { display:grid; grid-template-columns:repeat(3,1fr); gap:2mm; margin:0 0 1.9mm; }
+  .kpi { background:#0f5c8c; color:#fff; padding:1.4mm 2mm; }
+  .kpi .v { font-size:11.4pt; font-weight:700; line-height:1; font-variant-numeric:tabular-nums; }
+  .kpi .l { font-size:6.4pt; text-transform:uppercase; letter-spacing:.4pt;
+            opacity:.88; margin-top:.8mm; line-height:1.25; }
+  .foot { margin-top:3mm; padding-top:1.6mm; border-top:.5pt solid #c3d4e0;
+          font-size:7.2pt; color:#5b6d80; display:flex; justify-content:space-between; }
+  .ops { margin:.5mm 0 1.6mm; padding-left:3.6mm; line-height:1.22; }
+  .ops li { margin-bottom:0; }
+</style>
+
+<div class="eyebrow">INF01006 · Projeto de Banco de Dados · UFRGS</div>
+<h1>Gasto x Desempenho na Atenção Primária</h1>
+<p class="sub">Integração do gasto público municipal em Atenção Básica com os indicadores de
+desempenho da Atenção Primária do Ministério da Saúde. 497 municípios do Rio Grande do Sul,
+2020–2024.</p>
+<div class="rule"></div>
+
+<dl class="id">
+  <dt>Integrantes</dt><dd>Vinícius Witt Herzog · Pedro Rocha · Eduardo Rosa</dd>
+  <dt>Líder</dt><dd><span class="fill">a definir</span></dd>
+  <dt>Cooperação</dt><dd>Extensão PET-Saúde Digital — GAT05 Indicadores</dd>
+  <dt>Tecnologias</dt><dd>PostgreSQL · Python · Git</dd>
+</dl>
+
+<div class="grid">
+
+  <div class="full">
+    <h2>Resumo</h2>
+    <p><b>Objetivo geral.</b> Integrar, numa única base de dados, quanto cada município gasta em
+    Atenção Básica e como esse município é avaliado nos indicadores da Atenção Primária. A pergunta
+    é se investir mais por habitante se traduz em melhor desempenho, e quanto da variação observada
+    vem do serviço prestado ou da regra de cálculo.</p>
+    <p style="margin-bottom:.9mm"><b>Objetivos específicos:</b></p>
+    <ol>
+      <li>Modelar e implementar um esquema relacional que integre as diferentes fontes, resolvendo
+          chaves e granularidades incompatíveis.</li>
+      <li>Construir a dimensão versionada a partir das Notas Técnicas do Ministério da Saúde.</li>
+      <li>Quantificar, por faixas de investimento, a associação entre gasto per capita em Atenção
+          Básica e desempenho nos sete indicadores.</li>
+      <li>Separar, na variação da série, o desempenho real do efeito da mudança de regra: a troca de
+          Nota Técnica e a escolha entre os denominadores concorrentes.</li>
+      <li>Documentar a completude e a qualidade dos dados, produzindo uma base confiável e de fácil
+          entendimento para as análises desenvolvidas.</li>
+    </ol>
+    <p class="cap">A subfunção 10.301 reúne recurso próprio, federal e estadual, e o pagamento por
+    desempenho corresponde a apenas parte do repasse federal. A relação investigada é de
+    <b>associação, não de causalidade</b>.</p>
+  </div>
+
+  <div>
+    <h2>Base de dados</h2>
+    <table>
+      <tr><th>Fonte</th><th>Papel</th><th>Cobertura</th><th class="n">Registros</th></tr>
+      <tr><td><b>FINBRA</b><br>Tesouro Nacional</td><td>o gasto — despesa por função,
+          subfunção 10.301</td><td>2020–2025<br>município × ano</td><td class="n">651.198</td></tr>
+      <tr><td><b>SISAB</b><br>Ministério da Saúde</td><td>os indicadores — série
+          histórica</td><td>2018–2025<br>município × quadrimestre</td><td class="n">76.538</td></tr>
+      <tr><td><b>API DEMAS</b><br>Ministério da Saúde</td><td>numerador e os três
+          denominadores</td><td>2024<br>+ visão de equipe</td><td class="n">26.838</td></tr>
+    </table>
+    <p class="cap">Junção por <b>cod_ibge7 / 10</b>: o FINBRA usa código IBGE de sete dígitos; SISAB
+    e API, de seis. Testada nos 497 municípios do estado, que somam 754.574 linhas carregadas.</p>
+  </div>
+
+  <div>
+    <h2>Modelo de dados</h2>
+    <table>
+      <tr><th>Tabela</th><th>Grão / atributos</th></tr>
+      <tr><td><b>dim_municipio</b></td><td>cod_ibge6 · cod_ibge7 · nome · uf</td></tr>
+      <tr><td><b>dim_periodo</b></td><td>quadrimestre · ano · competência · regime</td></tr>
+      <tr><td><b>dim_indicador</b><br><span style="color:#b02a37">versionada</span></td>
+          <td>código · regime · nome · meta · peso · vigência · nota técnica</td></tr>
+      <tr><td><b>dim_conta</b></td><td>função · subfunção · nível · residual</td></tr>
+      <tr><td><b>fato_despesa</b></td><td>município × exercício × estágio × conta → valor</td></tr>
+      <tr><td><b>fato_indicador</b></td><td>município × quadrimestre × versão do indicador ×
+          visão × fonte</td></tr>
+    </table>
+    <p class="cap">Cada fato aponta para uma versão datada do indicador, de modo que 2021 e 2022 não sejam tratados como a mesma medida.</p>
+  </div>
+
+  <div class="full">
+    <h2>Resultado real ou mudança de régua?</h2>
+    <div class="fig">
+      <svg viewBox="0 0 880 108" style="display:block;width:100%;height:auto" font-family="Inter,Helvetica,Arial">
+        <rect x="40" y="46" width="424" height="24" fill="#e9edf1"/>
+        <rect x="464" y="46" width="376" height="24" fill="#dfeaf3"/>
+        <line x1="464" y1="36" x2="464" y2="84" stroke="#b02a37" stroke-width="2" stroke-dasharray="5 4"/>
+        <text x="252" y="62" text-anchor="middle" fill="#5b6d80" font-size="12" font-weight="700">regime NT 05/2020</text>
+        <text x="652" y="62" text-anchor="middle" fill="#0f5c8c" font-size="12" font-weight="700">regime NT 11/2022</text>
+        <g fill="#8a9aa8" font-size="11"><text x="40" y="84">2018</text><text x="840" y="84" text-anchor="end">2025</text></g>
+        <text x="464" y="96" text-anchor="middle" fill="#b02a37" font-size="11" font-weight="700">2022Q1</text>
+        <g stroke="#7a8b9a" stroke-width="1.2"><line x1="196" y1="46" x2="196" y2="30"/><line x1="700" y1="70" x2="700" y2="86"/></g>
+        <circle cx="196" cy="46" r="3.2" fill="#7a8b9a"/><circle cx="700" cy="70" r="3.2" fill="#0f5c8c"/>
+        <text x="196" y="24" text-anchor="middle" fill="#5b6d80" font-size="11">Nota Técnica nº 05/2020 · DESF/SAPS/MS</text>
+        <text x="700" y="100" text-anchor="middle" fill="#0f5c8c" font-size="11">Portaria GM/MS nº 3.493 · 10/04/2024 · encerra o Previne Brasil</text>
+        <text x="474" y="22" fill="#b02a37" font-size="11" font-weight="700">Portaria GM/MS nº 102 · 20/01/2022</text>
+        <text x="474" y="34" fill="#b02a37" font-size="11" font-weight="700">Nota Técnica nº 11/2022 · 15/02/2022</text>
+      </svg>
+      <p class="cap"><b>Os documentos oficiais que regem o cálculo dos indicadores.</b> A Portaria GM/MS nº 102/2022 determinou que, em indicadores e quadrimestres específicos, o alcance fosse considerado 100% apenas para fins de financiamento, enquanto o alcance medido era outro. Foi o caso da cobertura vacinal de Poliomielite e Pentavalente. Um mesmo indicador passa, assim, a ter dois valores: o publicado e o que entra no cálculo do repasse.</p>
+    </div>
+  </div>
+
+  <div>
+    <h2>O que vamos perguntar à base</h2>
+    <p style="margin:0 0 .3mm"><b>Básicas.</b></p>
+    <ul class="ops">
+      <li>Gasto per capita por município e por ano</li>
+      <li>Ranking de desempenho por indicador</li>
+      <li>Evolução quadrimestral de cada indicador</li>
+      <li>Composição do orçamento de saúde por subfunção</li>
+      <li>Cobertura e completude dos dados por ano</li>
+    </ul>
+    <p style="margin:0 0 .3mm"><b>Avançadas.</b></p>
+    <ul class="ops">
+      <li>Faixas de gasto contra faixas de desempenho (<span style="font-variant:small-caps">ntile</span>)</li>
+      <li>Variação ano a ano com funções de janela</li>
+      <li>Comparação entre municípios de porte semelhante</li>
+      <li>Recálculo do indicador sob cada um dos três denominadores</li>
+      <li>Quanto da variação é serviço prestado e quanto é mudança de regra</li>
+    </ul>
+  </div>
+
+  <div>
+    <h2>Justificativa — por que o tema cabe na disciplina</h2>
+    <p style="margin-bottom:1.4mm"><b>Chaves e granularidades incompatíveis.</b> O código IBGE tem
+    seis dígitos em duas fontes e sete na terceira; o gasto é anual e os indicadores são
+    quadrimestrais; os formatos de arquivo diferem entre si. Sem tratamento prévio, a junção não
+    retorna nenhuma linha.</p>
+    <p style="margin-bottom:1.4mm"><b>O indicador muda de definição.</b> A regra de cálculo mudou em
+    2022 e há denominadores concorrentes por registro. A definição do indicador torna-se uma
+    <b>dimensão versionada</b>, com vigência e nota técnica próprias.</p>
+    <p><b>Volume, domínio e operações.</b> Três bases oficiais e abertas sobre o gasto em saúde e o
+    desempenho dos 497 municípios do Rio Grande do Sul, seguindo as normas de extensão estabelecidas
+    pelo projeto PET-Saúde Digital. As consultas previstas empregam funções de janela, CTEs e
+    agregação por faixa.</p>
+  </div>
+
+</div>
+
+<div class="foot">
+  <span>Recorte: 497 municípios do RS · gasto 2020–2024 · indicadores 2018–2025 · sete indicadores em dois regimes metodológicos</span>
+  <span>Fontes: SICONFI/Tesouro Nacional · SISAB/MS · API Dados Abertos/MS</span>
+</div>

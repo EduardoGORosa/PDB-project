@@ -1,0 +1,13 @@
+[project]
+name = "pbd"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pandas>=3.0.5",
+    "psycopg[binary]>=3.3.4",
+    "python-docx>=1.2.0",
+    "python-pptx>=1.0.2",
+    "requests>=2.34.2",
+]
