@@ -171,3 +171,83 @@ SELECT f.quadrimestre, p.ano, p.numero_quadrimestre, f.regime,
  GROUP BY f.quadrimestre, p.ano, p.numero_quadrimestre, f.regime, i.codigo, i.ordem, i.meta;
 
 CREATE UNIQUE INDEX ON mv_serie_estadual (quadrimestre, codigo);
+
+
+-- ---------------------------------------------------------------------
+-- Grupo de referência por porte (junção reflexiva).
+-- Cada município é comparado aos 20 municípios de população mais próxima no
+-- mesmo ano, pela distância |ln(pop_b / pop_a)|. Uma faixa fixa (p. ex.
+-- 2/3 a 3/2 da população) deixaria as maiores cidades sem grupo: nenhum
+-- município do RS tem entre 2/3 e 3/2 da população de Porto Alegre.
+-- ---------------------------------------------------------------------
+CREATE MATERIALIZED VIEW mv_grupo_referencia AS
+WITH painel AS (
+    SELECT g.cod_ibge6, g.exercicio AS ano, g.populacao
+      FROM mv_gasto_anual g
+     WHERE g.gasto_ab_pc IS NOT NULL
+),
+distancias AS (
+    SELECT a.cod_ibge6, a.ano, b.cod_ibge6 AS cod_par,
+           ROW_NUMBER() OVER (PARTITION BY a.cod_ibge6, a.ano
+                              ORDER BY abs(ln(b.populacao::numeric / a.populacao)), b.cod_ibge6) AS ordem
+      FROM painel a
+      JOIN painel b ON b.ano = a.ano AND b.cod_ibge6 <> a.cod_ibge6
+)
+SELECT cod_ibge6, ano, cod_par, ordem
+  FROM distancias
+ WHERE ordem <= 20;
+
+CREATE UNIQUE INDEX ON mv_grupo_referencia (cod_ibge6, ano, cod_par);
+
+-- Posição percentual do município no gasto e no desempenho dentro do seu
+-- grupo, e os casos em que as duas posições caem em quartis opostos.
+CREATE VIEW vw_posicao_no_grupo AS
+WITH painel AS (
+    SELECT g.cod_ibge6, g.exercicio AS ano, g.populacao, g.gasto_ab_pc,
+           c.percentual AS desempenho
+      FROM mv_gasto_anual g
+      JOIN vw_desempenho_composto c ON c.cod_ibge6 = g.cod_ibge6 AND c.ano = g.exercicio
+     WHERE g.gasto_ab_pc IS NOT NULL
+),
+pares AS (
+    SELECT a.cod_ibge6, a.ano, a.populacao, a.gasto_ab_pc, a.desempenho,
+           count(*)                                              AS tamanho_grupo,
+           MIN(b.populacao) || ' – ' || MAX(b.populacao)         AS faixa_populacao_grupo,
+           count(*) FILTER (WHERE b.gasto_ab_pc < a.gasto_ab_pc) AS abaixo_no_gasto,
+           count(*) FILTER (WHERE b.desempenho  < a.desempenho)  AS abaixo_no_desempenho,
+           PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY b.gasto_ab_pc) AS gasto_mediano_grupo,
+           PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY b.desempenho)  AS desempenho_mediano_grupo
+      FROM painel a
+      JOIN mv_grupo_referencia r ON r.cod_ibge6 = a.cod_ibge6 AND r.ano = a.ano
+      JOIN painel b              ON b.cod_ibge6 = r.cod_par   AND b.ano = r.ano
+     GROUP BY a.cod_ibge6, a.ano, a.populacao, a.gasto_ab_pc, a.desempenho
+)
+SELECT p.*,
+       ROUND(100.0 * abaixo_no_gasto      / tamanho_grupo, 0) AS posicao_gasto,
+       ROUND(100.0 * abaixo_no_desempenho / tamanho_grupo, 0) AS posicao_desempenho,
+       CASE
+         WHEN 100.0 * abaixo_no_gasto / tamanho_grupo >= 75
+          AND 100.0 * abaixo_no_desempenho / tamanho_grupo <= 25 THEN 'gasta mais, rende menos'
+         WHEN 100.0 * abaixo_no_gasto / tamanho_grupo <= 25
+          AND 100.0 * abaixo_no_desempenho / tamanho_grupo >= 75 THEN 'gasta menos, rende mais'
+       END AS discrepancia
+  FROM pares p;
+
+
+-- ---------------------------------------------------------------------
+-- Gasto atípico: per capita abaixo de 10% da mediana estadual do ano.
+-- Valores assim (R$ 0,71 por habitante em 2021) indicam declaração com a
+-- despesa classificada em outra subfunção, não ausência de atenção básica.
+-- Vieira et al. (2022) documentam essa subestimação da 10.301.
+-- ---------------------------------------------------------------------
+CREATE VIEW vw_gasto_atipico AS
+WITH mediana AS (
+    SELECT exercicio, PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY gasto_ab_pc) AS med
+      FROM mv_gasto_anual GROUP BY exercicio
+)
+SELECT g.cod_ibge7, m.nome, g.exercicio, g.populacao, g.gasto_ab, g.gasto_ab_pc,
+       ROUND(md.med::numeric, 2) AS mediana_estadual, g.pct_ab_na_saude
+  FROM mv_gasto_anual g
+  JOIN mediana md USING (exercicio)
+  JOIN dim_municipio m USING (cod_ibge7)
+ WHERE g.gasto_ab_pc < 0.1 * md.med;
